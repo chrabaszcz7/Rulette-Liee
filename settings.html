@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -65,6 +65,16 @@
                             <p class="form-hint">Your unique tag: <span id="settingsTag">#00000</span></p>
                         </div>
                     </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label class="form-label">Avatar URL</label>
+                        <input type="url" class="form-input" id="settingsAvatarUrl" placeholder="https://media.discordapp.net/...">
+                        <p class="form-hint">Paste a direct image link (e.g. Discord media). Leave empty to remove avatar.</p>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label class="form-label">Bio / Opis</label>
+                        <textarea class="form-input" id="settingsBio" rows="3" placeholder="Napisz coś o sobie..."></textarea>
+                        <p class="form-hint">Max 200 znaków.</p>
+                    </div>
                 </div>
 
                 <!-- Sound -->
@@ -97,9 +107,9 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 12px;">
                         <div>
                             <p style="font-weight: 500;">Powiadomienia o zaproszeniach do znajomych</p>
-                            <p class="text-muted" style="font-size: 0.85rem;">Wyświetlaj toast, gdy ktoś wyśle Ci zaproszenie do znajomych</p>
+                            <p class="text-muted" style="font-size: 0.85rem;">Wyświetlaj Notyfikacje, gdy ktoś wyśle ci zaproszenie do znajomych</p>
                         </div>
-                        <button class="btn btn-neon btn-sm" id="notifBtn" onclick="toggleNotifications()">Włączone</button>
+                        <button class="btn btn-neon btn-sm" id="notifBtn" onclick="toggleNotifications()">Enabled</button>
                     </div>
                 </div>
 
@@ -165,16 +175,38 @@
             }
         });
 
+        function renderAvatar(el, nickname, avatarUrl) {
+            if (avatarUrl) {
+                el.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`;
+                return;
+            }
+            el.textContent = (nickname || '?').charAt(0).toUpperCase();
+        }
+
+        function normalizeAvatarUrl(raw) {
+            const trimmed = (raw || '').trim();
+            if (!trimmed) return null;
+            try {
+                const url = new URL(trimmed);
+                if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+                return url.toString();
+            } catch (e) {
+                return null;
+            }
+        }
+
         function updateSidebar() {
             document.getElementById('sidebarName').textContent = currentUser.nickname;
             document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
-            document.getElementById('sidebarAvatar').textContent = currentUser.nickname.charAt(0).toUpperCase();
+            renderAvatar(document.getElementById('sidebarAvatar'), currentUser.nickname, currentUser.avatarUrl);
         }
 
         function updateSettings() {
             document.getElementById('settingsEmail').value = currentUser.email;
             document.getElementById('settingsNickname').value = currentUser.nickname;
             document.getElementById('settingsTag').textContent = '#' + currentUser.suffix;
+            document.getElementById('settingsAvatarUrl').value = currentUser.avatarUrl || '';
+            document.getElementById('settingsBio').value = currentUser.bio || '';
 
             soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
             notificationsEnabled = currentUser.notificationsFriendRequests !== false;
@@ -185,10 +217,10 @@
             const soundBtn = document.getElementById('soundBtn');
             const notifBtn = document.getElementById('notifBtn');
 
-            soundBtn.textContent = soundEnabled ? 'Włączone' : 'Wyłączone';
+            soundBtn.textContent = soundEnabled ? 'Enabled' : 'Disabled';
             soundBtn.className = soundEnabled ? 'btn btn-neon btn-sm' : 'btn btn-ghost btn-sm';
 
-            notifBtn.textContent = notificationsEnabled ? 'Włączone' : 'Wyłączone';
+            notifBtn.textContent = notificationsEnabled ? 'Enabled' : 'Disabled';
             notifBtn.className = notificationsEnabled ? 'btn btn-neon btn-sm' : 'btn btn-ghost btn-sm';
         }
 
@@ -208,26 +240,56 @@
                 currentUser.notificationsFriendRequests = notificationsEnabled;
                 if (window.__currentUser) window.__currentUser.notificationsFriendRequests = notificationsEnabled;
             } catch (e) {
-                showToast('Błąd: ' + (e && e.message), 'error');
+                showToast('BĹ‚Ä…d: ' + (e && e.message), 'error');
                 notificationsEnabled = !notificationsEnabled;
             }
             updateButtons();
         }
 
         async function saveSettings() {
+            const avatarInput = document.getElementById('settingsAvatarUrl');
+            const avatarRaw = avatarInput.value;
+            const avatarUrl = normalizeAvatarUrl(avatarRaw);
+            const bioInput = document.getElementById('settingsBio');
+            const bioRaw = (bioInput.value || '').trim();
+            if (avatarRaw.trim() && !avatarUrl) {
+                showToast('Nieprawidlowy link do obrazka.', 'error');
+                return;
+            }
+            if (bioRaw.length > 200) {
+                showToast('Bio jest zbyt dlugie (max 200 znakow).', 'error');
+                return;
+            }
             try {
-                await db.collection('users').doc(currentUser.id).update({
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                const updates = { updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                if ((currentUser.avatarUrl || null) !== (avatarUrl || null)) {
+                    updates.avatarUrl = avatarUrl || null;
+                }
+                if ((currentUser.bio || '') !== bioRaw) {
+                    updates.bio = bioRaw || null;
+                }
+                await db.collection('users').doc(currentUser.id).update(updates);
+                currentUser.avatarUrl = avatarUrl || null;
+                currentUser.bio = bioRaw || null;
+                if (window.__currentUser) window.__currentUser.avatarUrl = currentUser.avatarUrl;
+                renderAvatar(document.getElementById('sidebarAvatar'), currentUser.nickname, currentUser.avatarUrl);
                 showToast('Zapisano!', 'success');
             } catch (e) {
-                showToast('Błąd: ' + (e && e.message), 'error');
+                showToast('BĹ‚Ä…d: ' + (e && e.message), 'error');
             }
         }
 
         function logout() {
             auth.signOut().then(() => window.location.href = 'login.html');
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const avatarInput = document.getElementById('settingsAvatarUrl');
+            avatarInput.addEventListener('input', () => {
+                const candidate = normalizeAvatarUrl(avatarInput.value);
+                renderAvatar(document.getElementById('sidebarAvatar'), currentUser?.nickname || '?', candidate);
+            });
+        });
     </script>
 </body>
 </html>

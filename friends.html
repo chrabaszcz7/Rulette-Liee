@@ -130,6 +130,9 @@
             document.getElementById('sidebarName').textContent = currentUser.nickname;
             document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
             document.getElementById('sidebarAvatar').textContent = currentUser.nickname.charAt(0).toUpperCase();
+            if (currentUser.avatarUrl) {
+                document.getElementById('sidebarAvatar').innerHTML = `<img src="${currentUser.avatarUrl}" alt="Avatar">`;
+            }
         }
 
         function loadPendingRequests() {

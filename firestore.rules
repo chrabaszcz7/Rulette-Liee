@@ -29,7 +29,7 @@ service cloud.firestore {
       // Users can only update their own profile (limited fields)
       allow update: if isOwner(userId) && 
                        request.resource.data.diff(resource.data).affectedKeys()
-                         .hasOnly(['avatarUrl', 'updatedAt', 'notificationsFriendRequests']);
+                         .hasOnly(['avatarUrl', 'bio', 'updatedAt', 'notificationsFriendRequests']);
       
       // Stats updates (wins, losses, totalGames) only via Cloud Functions
       // Users cannot delete their profiles directly
