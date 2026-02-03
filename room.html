@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Room - Rulette Lie</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar (minimal) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-user">
+                <a href="profile.html" class="user-card">
+                    <div class="user-avatar" id="sidebarAvatar">?</div>
+                    <div class="user-info">
+                        <div class="user-name" id="sidebarName">Loading...</div>
+                        <div class="user-tag" id="sidebarTag">#00000</div>
+                    </div>
+                </a>
+            </div>
+            <div class="sidebar-divider"></div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>Home</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-ghost btn-logout" onclick="logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Waiting Room View -->
+            <div id="waitingRoom">
+                <div style="max-width: 1200px; margin: 0 auto;">
+                    <!-- Header -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+                        <div>
+                            <h1 style="font-size: 2rem; font-weight: bold;">Game Lobby</h1>
+                            <div class="room-code-display mt-1">
+                                <span class="text-muted">Room Code:</span>
+                                <div class="room-code">
+                                    <span id="roomCode">ROOM-XXXXX</span>
+                                    <button class="btn btn-icon btn-ghost" onclick="copyRoomCode()" title="Copy code">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger" onclick="leaveRoom()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            Leave Room
+                        </button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+                        <!-- Players -->
+                        <div class="card glass">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                    Players
+                                </h3>
+                                <span class="badge badge-purple" id="playerCount">0/6</span>
+                            </div>
+                            <div class="players-grid" id="playersGrid">
+                                <!-- Players will be inserted here -->
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div>
+                            <div class="card glass mb-2">
+                                <h3 class="card-title mb-2">Your Status</h3>
+                                <button class="btn btn-neon btn-full" id="readyBtn" onclick="toggleReady()">
+                                    Ready Up
+                                </button>
+                                
+                                <div id="hostControls" class="hidden mt-2">
+                                    <hr style="border-color: var(--border-color); margin: 1rem 0;">
+                                    <button class="btn btn-ghost btn-full mb-2" id="inviteFriendBtn" onclick="openInviteModal()">
+                                        Zaproś znajomego
+                                    </button>
+                                    <button class="btn btn-neon btn-full" id="startGameBtn" onclick="startGame()" disabled>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        </svg>
+                                        Start Game
+                                    </button>
+                                    <p class="text-muted text-center mt-1" style="font-size: 0.85rem;" id="startHint">
+                                        Waiting for all players to be ready
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Chat -->
+                            <div class="card glass" style="height: 350px; display: flex; flex-direction: column; padding: 0;">
+                                <div style="padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                                    <h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1rem;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="color: var(--neon-cyan);">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                        Chat
+                                    </h3>
+                                </div>
+                                <div class="chat-messages" id="chatMessages">
+                                    <div class="chat-empty">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                        <p>No messages yet</p>
+                                    </div>
+                                </div>
+                                <div class="chat-input-container">
+                                    <input type="text" class="chat-input" id="chatInput" placeholder="Type a message...">
+                                    <button class="btn btn-neon btn-icon" onclick="sendMessage()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invite friend modal -->
+            <div class="modal-overlay" id="inviteModal">
+                <div class="modal glass">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Zaproś znajomego do lobby</h2>
+                        <p class="modal-desc">Wybierz znajomego z listy</p>
+                    </div>
+                    <div id="inviteFriendsList" style="max-height: 200px; overflow-y: auto;"></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-ghost" onclick="closeInviteModal()">Zamknij</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game View -->
+            <div id="gameView" class="hidden">
+                <div class="game-layout">
+                    <!-- Game Arena -->
+                    <div class="game-arena">
+                        <div class="card glass" id="gameArenaCard" style="height: 100%;">
+                            <!-- Game content will be inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Chat -->
+                    <div class="game-chat">
+                        <div class="chat-container" style="height: 100%;">
+                            <div class="chat-header">
+                                <h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="color: var(--neon-cyan);">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    Live Chat
+                                </h3>
+                            </div>
+                            <div class="chat-messages" id="gameChatMessages"></div>
+                            <div class="chat-input-container">
+                                <input type="text" class="chat-input" id="gameChatInput" placeholder="Type a message...">
+                                <button class="btn btn-neon btn-icon" onclick="sendMessage()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-check-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/game-config.js"></script>
+    <script>
+        let currentUser = null;
+        let roomId = null;
+        let roomData = null;
+        let gameData = null;
+        let unsubscribeRoom = null;
+        let unsubscribeGame = null;
+        let unsubscribeChat = null;
+
+        // Get room ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        roomId = urlParams.get('id');
+
+        if (!roomId) {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Initialize
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const doc = await db.collection('users').doc(user.uid).get();
+            if (doc.exists) {
+                currentUser = { id: doc.id, ...doc.data() };
+                updateSidebar();
+                subscribeToRoom();
+                subscribeToChat();
+            }
+        });
+
+        function updateSidebar() {
+            document.getElementById('sidebarName').textContent = currentUser.nickname;
+            document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
+            document.getElementById('sidebarAvatar').textContent = currentUser.nickname.charAt(0).toUpperCase();
+        }
+
+        function subscribeToRoom() {
+            unsubscribeRoom = db.collection('rooms').doc(roomId).onSnapshot((doc) => {
+                if (!doc.exists) {
+                    showToast('Room no longer exists', 'error');
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+
+                roomData = { id: doc.id, ...doc.data() };
+                
+                if (roomData.status === 'active') {
+                    subscribeToGame();
+                    showGameView();
+                } else if (roomData.status === 'finished') {
+                    // Game finished
+                } else {
+                    updateWaitingRoom();
+                }
+            });
+        }
+
+        function subscribeToGame() {
+            if (unsubscribeGame) return;
+
+            unsubscribeGame = db.collection('games').where('roomId', '==', roomId).onSnapshot((snapshot) => {
+                if (!snapshot.empty) {
+                    gameData = { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+                    updateGameView();
+                }
+            });
+        }
+
+        function subscribeToChat() {
+            unsubscribeChat = db.collection('rooms').doc(roomId).collection('messages')
+                .orderBy('createdAt', 'asc')
+                .limitToLast(50)
+                .onSnapshot((snapshot) => {
+                    const messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    updateChat(messages);
+                });
+        }
+
+        function updateWaitingRoom() {
+            document.getElementById('roomCode').textContent = roomData.code;
+            document.getElementById('playerCount').textContent = `${roomData.players.length}/${roomData.maxPlayers}`;
+
+            // Update players grid
+            const grid = document.getElementById('playersGrid');
+            grid.innerHTML = '';
+
+            roomData.players.forEach(player => {
+                const isMe = player.id === currentUser.id;
+                grid.innerHTML += `
+                    <div class="player-card ${player.isReady ? 'ready' : ''} ${isMe ? 'highlight' : ''}">
+                        <div class="player-avatar">${player.nickname.charAt(0).toUpperCase()}</div>
+                        <div class="player-info">
+                            <div class="player-name">
+                                ${player.nickname}
+                                ${player.isHost ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="color: #fbbf24;"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>' : ''}
+                            </div>
+                            <div class="player-tag">#${player.suffix}</div>
+                        </div>
+                        <span class="player-status ${player.isReady ? 'ready' : 'waiting'}">
+                            ${player.isReady ? 'Ready' : 'Not Ready'}
+                        </span>
+                    </div>
+                `;
+            });
+
+            // Empty slots
+            for (let i = roomData.players.length; i < roomData.maxPlayers; i++) {
+                grid.innerHTML += '<div class="empty-slot">Waiting for player...</div>';
+            }
+
+            // Update ready button
+            const myPlayer = roomData.players.find(p => p.id === currentUser.id);
+            const readyBtn = document.getElementById('readyBtn');
+            if (myPlayer) {
+                readyBtn.textContent = myPlayer.isReady ? 'Cancel Ready' : 'Ready Up';
+                readyBtn.className = myPlayer.isReady ? 'btn btn-ghost btn-full' : 'btn btn-neon btn-full';
+            }
+
+            // Host controls
+            const isHost = roomData.hostId === currentUser.id;
+            document.getElementById('hostControls').classList.toggle('hidden', !isHost);
+
+            if (isHost) {
+                const allReady = roomData.players.every(p => p.isReady);
+                const enoughPlayers = roomData.players.length >= 2;
+                const startBtn = document.getElementById('startGameBtn');
+                startBtn.disabled = !allReady || !enoughPlayers;
+                
+                if (!enoughPlayers) {
+                    document.getElementById('startHint').textContent = 'Need at least 2 players';
+                } else if (!allReady) {
+                    document.getElementById('startHint').textContent = 'Waiting for all players to be ready';
+                } else {
+                    document.getElementById('startHint').textContent = '';
+                }
+            }
+        }
+
+        function showGameView() {
+            document.getElementById('waitingRoom').classList.add('hidden');
+            document.getElementById('gameView').classList.remove('hidden');
+        }
+
+        function updateGameView() {
+            if (!gameData) return;
+
+            const arena = document.getElementById('gameArenaCard');
+            
+            // Game finished
+            if (gameData.state === 'finished') {
+                const winner = roomData.players.find(p => p.id === gameData.winnerId);
+                const isWinner = gameData.winnerId === currentUser.id;
+                
+                arena.innerHTML = `
+                    <div class="game-over">
+                        <div class="game-over-icon ${isWinner ? 'winner' : 'loser'}">
+                            ${isWinner ? 
+                                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>' :
+                                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 17c0-1.657 1.79-3 4-3s4 1.343 4 3"/><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
+                            }
+                        </div>
+                        <h2 class="${isWinner ? 'winner' : ''}">${isWinner ? 'Victory!' : 'Game Over'}</h2>
+                        <div class="winner-info">
+                            <div class="winner-avatar">${winner?.nickname.charAt(0).toUpperCase()}</div>
+                            <div style="text-align: left;">
+                                <p class="text-muted" style="font-size: 0.85rem;">Winner</p>
+                                <p style="font-size: 1.5rem; font-weight: bold;">${winner?.nickname}</p>
+                                <p class="text-muted">#${winner?.suffix}</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-neon btn-lg" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Get current round
+            const currentRound = gameData.rounds[gameData.rounds.length - 1];
+            if (!currentRound) return;
+
+            const missionPlayer = roomData.players.find(p => p.id === currentRound.missionPlayerId);
+            const decisionPlayer = roomData.players.find(p => p.id === currentRound.decisionPlayerId);
+            const isMissionPlayer = currentRound.missionPlayerId === currentUser.id;
+            const isDecisionPlayer = currentRound.decisionPlayerId === currentUser.id;
+
+            // Roulette phase
+            if (gameData.state === 'roulette_phase') {
+                const eliminated = currentRound.rouletteResult === gameData.chamber;
+                const correctGuess = currentRound.decision === currentRound.mission;
+                const targetPlayer = correctGuess ? missionPlayer : decisionPlayer;
+                
+                arena.innerHTML = `
+                    <div class="roulette-container">
+                        <div class="roulette-wheel">
+                            <div class="roulette-cylinder">
+                                <svg class="roulette-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="22" y1="12" x2="18" y2="12"></line>
+                                    <line x1="6" y1="12" x2="2" y2="12"></line>
+                                    <line x1="12" y1="6" x2="12" y2="2"></line>
+                                    <line x1="12" y1="22" x2="12" y2="18"></line>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="roulette-result ${eliminated ? 'eliminated' : 'survived'}">
+                            ${eliminated ? 
+                                `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="color: var(--error);"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 17c0-1.657 1.79-3 4-3s4 1.343 4 3"/><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/></svg>` :
+                                `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--neon-green);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`
+                            }
+                            <h2>${eliminated ? `BANG! ${targetPlayer?.nickname} is eliminated!` : `Click! ${targetPlayer?.nickname} survives!`}</h2>
+                        </div>
+                        <button class="btn btn-neon btn-lg mt-3" onclick="continueGame()">Continue</button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Mission phase: mission sees EMOJI only, chooses truth/lie. No mission shown.
+            const emoji = currentRound.missionEmoji || currentRound.roleBadge || '🐺';
+            const missionChosen = currentRound.mission !== null && currentRound.mission !== undefined;
+
+            arena.innerHTML = `
+                <div style="padding: 1.5rem;">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <circle cx="12" cy="12" r="6"></circle>
+                                <circle cx="12" cy="12" r="2"></circle>
+                            </svg>
+                            Runda ${gameData.currentRound}
+                        </h3>
+                        <span class="text-muted">${gameData.alivePlayers.length} graczy żyje</span>
+                    </div>
+
+                    <div class="game-status">
+                        <h2 class="game-state">${gameData.state === 'mission_phase' && !missionChosen ? 'Wybierz: powiesz prawdę czy skłamiesz?' : gameData.state === 'mission_phase' ? 'Opisz emotkę w chacie!' : 'Prawda czy kłamstwo?'}</h2>
+                    </div>
+
+                    <div class="players-arena">
+                        <div class="player-role-card mission">
+                            <p class="role-label">Gracz z misją</p>
+                            <div class="role-avatar">${missionPlayer?.nickname.charAt(0).toUpperCase()}</div>
+                            <p class="role-name">${missionPlayer?.nickname}</p>
+                            ${isMissionPlayer ? `
+                                <div class="mission-badge" style="font-size: 4rem; margin: 1rem 0;">${emoji}</div>
+                                <p class="text-muted">Opisz tę emotkę w chacie (prawdziwie lub nie)</p>
+                                ${!missionChosen ? `
+                                    <p class="text-muted mt-1">Najpierw wybierz:</p>
+                                    <div class="decision-buttons" style="margin-top: 1rem;">
+                                        <button class="btn btn-truth" onclick="chooseMission('TRUTH')">Opowiem prawdę</button>
+                                        <button class="btn btn-lie" onclick="chooseMission('LIE')">Skłamię</button>
+                                    </div>
+                                ` : `
+                                    <p class="text-muted mt-2">Wybrałeś. Opisz emotkę w chacie i czekaj na decyzję drugiego gracza.</p>
+                                `}
+                            ` : `
+                                <p class="text-muted mt-2">${missionChosen ? 'Opisuje emotkę w chacie...' : 'Wybiera...'}</p>
+                            `}
+                        </div>
+
+                        <div class="player-role-card decision">
+                            <p class="role-label">Gracz decydujący</p>
+                            <div class="role-avatar">${decisionPlayer?.nickname.charAt(0).toUpperCase()}</div>
+                            <p class="role-name">${decisionPlayer?.nickname}</p>
+                            ${isDecisionPlayer && gameData.state === 'decision_phase' ? `
+                                <p class="text-muted mt-2">Gracz z misją opisał emotkę w chacie. Mówi prawdę czy kłamie?</p>
+                                <div class="decision-buttons">
+                                    <button class="btn btn-truth" onclick="makeDecision('TRUTH')">Prawda</button>
+                                    <button class="btn btn-lie" onclick="makeDecision('LIE')">Kłamstwo</button>
+                                </div>
+                            ` : isDecisionPlayer && missionChosen ? `
+                                <p class="text-muted mt-2">Słuchaj opisu w chacie, zaraz zobaczysz przyciski.</p>
+                            ` : ''
+                            }
+                        </div>
+                    </div>
+
+                    <div class="alive-players">
+                        <h4>Gracze żywi</h4>
+                        <div class="alive-list">
+                            ${roomData.players.map(p => `
+                                <div class="alive-player ${gameData.alivePlayers.includes(p.id) ? '' : 'eliminated'}">
+                                    <div class="alive-avatar">${p.nickname.charAt(0).toUpperCase()}</div>
+                                    <span>${p.nickname}</span>
+                                    ${!gameData.alivePlayers.includes(p.id) ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="color: var(--error);"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 17c0-1.657 1.79-3 4-3s4 1.343 4 3"/></svg>' : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function chooseMission(choice) {
+            const currentRound = gameData.rounds[gameData.rounds.length - 1];
+            if (!currentRound || currentRound.mission != null) return;
+            currentRound.mission = choice;
+            await db.collection('games').doc(gameData.id).update({
+                state: 'decision_phase',
+                rounds: gameData.rounds,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+
+        function updateChat(messages) {
+            const container = roomData?.status === 'active' ? 
+                document.getElementById('gameChatMessages') : 
+                document.getElementById('chatMessages');
+            
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="chat-empty">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <p>No messages yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = messages.map(msg => {
+                const isOwn = msg.userId === currentUser.id;
+                return `
+                    <div class="chat-message ${isOwn ? 'own' : ''}">
+                        <div class="chat-avatar">${msg.nickname.charAt(0).toUpperCase()}</div>
+                        <div class="chat-content">
+                            <div class="chat-meta">
+                                <span class="chat-name">${msg.nickname}</span>
+                                <span class="chat-time">${formatTime(msg.createdAt)}</span>
+                            </div>
+                            <div class="chat-bubble">${msg.message}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function toggleReady() {
+            const myPlayer = roomData.players.find(p => p.id === currentUser.id);
+            if (!myPlayer) return;
+
+            const updatedPlayers = roomData.players.map(p => 
+                p.id === currentUser.id ? { ...p, isReady: !p.isReady } : p
+            );
+
+            await db.collection('rooms').doc(roomId).update({
+                players: updatedPlayers,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+
+        async function startGame() {
+            const btn = document.getElementById('startGameBtn');
+            btn.disabled = true;
+            btn.textContent = 'Starting...';
+
+            try {
+                const playerIds = roomData.players.map(p => p.id);
+                const shuffled = [...playerIds].sort(() => Math.random() - 0.5);
+                const chamber = Math.floor(Math.random() * 6) + 1;
+                const missionEmoji = typeof getRandomMissionEmoji === 'function' ? getRandomMissionEmoji() : '🐺';
+
+                await db.collection('games').add({
+                    roomId: roomId,
+                    state: 'mission_phase',
+                    chamber: chamber,
+                    currentRound: 1,
+                    rounds: [{
+                        roundNumber: 1,
+                        missionPlayerId: shuffled[0],
+                        decisionPlayerId: shuffled[1],
+                        missionEmoji: missionEmoji,
+                        mission: null,
+                        decision: null,
+                        eliminatedPlayerId: null,
+                        rouletteResult: null
+                    }],
+                    alivePlayers: playerIds,
+                    winnerId: null,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                await db.collection('rooms').doc(roomId).update({
+                    status: 'active',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast('Game started!', 'success');
+            } catch (error) {
+                showToast('Failed to start game', 'error');
+                console.error(error);
+                btn.disabled = false;
+                btn.textContent = 'Start Game';
+            }
+        }
+
+        async function makeDecision(decision) {
+            const currentRound = gameData.rounds[gameData.rounds.length - 1];
+            const isCorrect = decision === currentRound.mission;
+            
+            let eliminatedPlayerId = null;
+            const rouletteResult = Math.floor(Math.random() * 6) + 1;
+            
+            if (!isCorrect) {
+                // Wrong - decision player faces roulette
+                if (rouletteResult === gameData.chamber) {
+                    eliminatedPlayerId = currentRound.decisionPlayerId;
+                }
+            } else {
+                // Correct - mission player faces roulette
+                if (rouletteResult === gameData.chamber) {
+                    eliminatedPlayerId = currentRound.missionPlayerId;
+                }
+            }
+
+            currentRound.decision = decision;
+            currentRound.rouletteResult = rouletteResult;
+            currentRound.eliminatedPlayerId = eliminatedPlayerId;
+
+            let alivePlayers = [...gameData.alivePlayers];
+            if (eliminatedPlayerId) {
+                alivePlayers = alivePlayers.filter(id => id !== eliminatedPlayerId);
+            }
+
+            let newState = 'roulette_phase';
+            let winnerId = null;
+
+            if (alivePlayers.length === 1) {
+                newState = 'finished';
+                winnerId = alivePlayers[0];
+            }
+
+            await db.collection('games').doc(gameData.id).update({
+                state: newState,
+                rounds: gameData.rounds,
+                alivePlayers: alivePlayers,
+                winnerId: winnerId,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            // Update stats if game finished
+            if (winnerId) {
+                const batch = db.batch();
+                roomData.players.forEach(player => {
+                    const userRef = db.collection('users').doc(player.id);
+                    if (player.id === winnerId) {
+                        batch.update(userRef, {
+                            wins: firebase.firestore.FieldValue.increment(1),
+                            totalGames: firebase.firestore.FieldValue.increment(1)
+                        });
+                    } else {
+                        batch.update(userRef, {
+                            losses: firebase.firestore.FieldValue.increment(1),
+                            totalGames: firebase.firestore.FieldValue.increment(1)
+                        });
+                    }
+                });
+
+                batch.update(db.collection('rooms').doc(roomId), {
+                    status: 'finished',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                await batch.commit();
+            }
+        }
+
+        async function continueGame() {
+            if (gameData.alivePlayers.length <= 1) return;
+
+            const shuffled = [...gameData.alivePlayers].sort(() => Math.random() - 0.5);
+            const missionEmoji = typeof getRandomMissionEmoji === 'function' ? getRandomMissionEmoji() : '🐺';
+
+            const newRound = {
+                roundNumber: gameData.currentRound + 1,
+                missionPlayerId: shuffled[0],
+                decisionPlayerId: shuffled[1],
+                missionEmoji: missionEmoji,
+                mission: null,
+                decision: null,
+                eliminatedPlayerId: null,
+                rouletteResult: null
+            };
+
+            await db.collection('games').doc(gameData.id).update({
+                state: 'mission_phase',
+                currentRound: gameData.currentRound + 1,
+                rounds: firebase.firestore.FieldValue.arrayUnion(newRound),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+
+        async function sendMessage() {
+            const input = roomData?.status === 'active' ? 
+                document.getElementById('gameChatInput') : 
+                document.getElementById('chatInput');
+            
+            const message = input.value.trim();
+            if (!message) return;
+
+            await db.collection('rooms').doc(roomId).collection('messages').add({
+                roomId: roomId,
+                userId: currentUser.id,
+                nickname: currentUser.nickname,
+                suffix: currentUser.suffix,
+                message: message,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            input.value = '';
+        }
+
+        function copyRoomCode() {
+            navigator.clipboard.writeText(roomData.code);
+            showToast('Code copied!', 'success');
+        }
+
+        async function openInviteModal() {
+            const list = document.getElementById('inviteFriendsList');
+            list.innerHTML = '<p class="text-muted">Ładowanie...</p>';
+            document.getElementById('inviteModal').classList.add('show');
+            const snap = await db.collection('users').doc(currentUser.id).collection('friends').get();
+            const ids = snap.docs.map(d => d.data().userId);
+            if (!ids.length) {
+                list.innerHTML = '<p class="text-muted">Brak znajomych. Dodaj ich w zakładce Friends.</p>';
+                return;
+            }
+            const friends = [];
+            for (const id of ids) {
+                const d = await db.collection('users').doc(id).get();
+                if (d.exists) friends.push({ id: d.id, ...d.data() });
+            }
+            const inRoom = roomData.players.map(p => p.id);
+            const canInvite = friends.filter(f => !inRoom.includes(f.id));
+            if (!canInvite.length) {
+                list.innerHTML = '<p class="text-muted">Wszyscy znajomi są już w pokoju.</p>';
+                return;
+            }
+            list.innerHTML = canInvite.map(f => `
+                <div class="friend-item" style="cursor:pointer;" onclick="inviteToLobby('${f.id}')">
+                    <div class="friend-avatar">${(f.nickname || '').charAt(0).toUpperCase()}</div>
+                    <div class="friend-info">
+                        <div class="friend-name">${f.nickname}</div>
+                        <div class="friend-tag">#${f.suffix}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function closeInviteModal() {
+            document.getElementById('inviteModal').classList.remove('show');
+        }
+        document.getElementById('inviteModal').addEventListener('click', function(e) {
+            if (e.target.id === 'inviteModal') closeInviteModal();
+        });
+
+        async function inviteToLobby(friendId) {
+            try {
+                await db.collection('roomInvites').add({
+                    roomId: roomId,
+                    roomCode: roomData.code,
+                    hostId: currentUser.id,
+                    hostNickname: currentUser.nickname,
+                    toUserId: friendId,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showToast('Zaproszenie wysłane!', 'success');
+                closeInviteModal();
+            } catch (e) {
+                showToast('Błąd: ' + e.message, 'error');
+            }
+        }
+
+        async function leaveRoom() {
+            if (unsubscribeRoom) unsubscribeRoom();
+            if (unsubscribeGame) unsubscribeGame();
+            if (unsubscribeChat) unsubscribeChat();
+
+            const myPlayer = roomData.players.find(p => p.id === currentUser.id);
+            if (myPlayer) {
+                const updatedPlayers = roomData.players.filter(p => p.id !== currentUser.id);
+                await db.collection('rooms').doc(roomId).update({
+                    players: updatedPlayers,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+
+            window.location.href = 'dashboard.html';
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = 'login.html';
+            });
+        }
+
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        const gi = document.getElementById('gameChatInput');
+        if (gi) gi.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribeRoom) unsubscribeRoom();
+            if (unsubscribeGame) unsubscribeGame();
+            if (unsubscribeChat) unsubscribeChat();
+        });
+    </script>
+</body>
+</html>
+

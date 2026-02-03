@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Rulette Lie</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-user">
+                <a href="profile.html" class="user-card">
+                    <div class="user-avatar" id="sidebarAvatar">?</div>
+                    <div class="user-info">
+                        <div class="user-name" id="sidebarName">Loading...</div>
+                        <div class="user-tag" id="sidebarTag">#00000</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>Home</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="leaderboard.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                        <path d="M4 22h16"></path>
+                        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                    </svg>
+                    <span>Leaderboard</span>
+                </a>
+                <a href="friends.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>Friends</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="22" y1="12" x2="18" y2="12"></line>
+                        <line x1="6" y1="12" x2="2" y2="12"></line>
+                        <line x1="12" y1="6" x2="12" y2="2"></line>
+                        <line x1="12" y1="22" x2="12" y2="18"></line>
+                    </svg>
+                    <span>Rulette Lie</span>
+                </div>
+                <button class="btn btn-ghost btn-logout" onclick="logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <!-- Welcome Header -->
+                <div class="text-center mb-3">
+                    <h1 style="font-size: 2.5rem; font-weight: bold; background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink), var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        Welcome back, <span id="welcomeName">Player</span>!
+                    </h1>
+                    <p class="text-muted" style="font-size: 1.1rem;">Ready to test your luck?</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card glass">
+                        <div class="stat-value green" id="statWins">0</div>
+                        <div class="stat-label">Wins</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-value red" id="statLosses">0</div>
+                        <div class="stat-label">Losses</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-value blue" id="statTotal">0</div>
+                        <div class="stat-label">Total Games</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-value purple" id="statWinrate">0%</div>
+                        <div class="stat-label">Win Rate</div>
+                    </div>
+                </div>
+
+                <!-- Action Cards -->
+                <div class="action-cards">
+                    <div class="action-card glass" onclick="openCreateRoomModal()">
+                        <div class="action-icon purple">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </div>
+                        <h2 class="action-title">Create Room</h2>
+                        <p class="action-desc">Start a new game and invite your friends</p>
+                    </div>
+
+                    <div class="action-card glass cyan" onclick="openJoinRoomModal()">
+                        <div class="action-icon cyan">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h2 class="action-title">Join Room</h2>
+                        <p class="action-desc">Enter a room code to join an existing game</p>
+                    </div>
+                </div>
+
+                <!-- How to Play -->
+                <div class="card glass">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="22" y1="12" x2="18" y2="12"></line>
+                                <line x1="6" y1="12" x2="2" y2="12"></line>
+                                <line x1="12" y1="6" x2="12" y2="2"></line>
+                                <line x1="12" y1="22" x2="12" y2="18"></line>
+                            </svg>
+                            How to Play
+                        </h3>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; color: var(--text-secondary);">
+                        <div>
+                            <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(168, 85, 247, 0.2); color: var(--neon-purple); display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">1</span>
+                                Roles
+                            </h4>
+                            <p style="font-size: 0.9rem; padding-left: 2rem;">Each round, one player becomes the <span style="color: var(--neon-purple); font-weight: 500;">Mission Player</span> and another becomes the <span style="color: var(--neon-pink); font-weight: 500;">Decision Player</span>.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(168, 85, 247, 0.2); color: var(--neon-purple); display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">2</span>
+                                Mission
+                            </h4>
+                            <p style="font-size: 0.9rem; padding-left: 2rem;">The Mission Player receives a secret mission: <span style="color: var(--neon-green);">TRUTH</span> or <span style="color: var(--error);">LIE</span>.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(168, 85, 247, 0.2); color: var(--neon-purple); display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">3</span>
+                                Decision
+                            </h4>
+                            <p style="font-size: 0.9rem; padding-left: 2rem;">The Decision Player must guess whether the Mission Player is telling the truth or lying.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(168, 85, 247, 0.2); color: var(--neon-purple); display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">4</span>
+                                Roulette
+                            </h4>
+                            <p style="font-size: 0.9rem; padding-left: 2rem;">Wrong guess? Time for Russian Roulette! If the chamber fires, you're eliminated.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create Room Modal -->
+    <div class="modal-overlay" id="createRoomModal">
+        <div class="modal glass">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Room</h2>
+                <p class="modal-desc">A room code will be generated for your friends to join</p>
+            </div>
+            <div class="text-center">
+                <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink)); display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="50" height="50" style="color: white;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="22" y1="12" x2="18" y2="12"></line>
+                        <line x1="6" y1="12" x2="2" y2="12"></line>
+                        <line x1="12" y1="6" x2="12" y2="2"></line>
+                        <line x1="12" y1="22" x2="12" y2="18"></line>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeCreateRoomModal()">Cancel</button>
+                <button class="btn btn-neon" id="createRoomBtn" onclick="createRoom()">Create Room</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Room Modal -->
+    <div class="modal-overlay" id="joinRoomModal">
+        <div class="modal glass">
+            <div class="modal-header">
+                <h2 class="modal-title">Join Room</h2>
+                <p class="modal-desc">Enter the room code shared by your friend</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Room Code</label>
+                <input type="text" id="joinRoomCode" class="form-input" placeholder="ROOM-XXXXX" style="text-align: center; font-size: 1.25rem; font-family: monospace; letter-spacing: 0.1em; text-transform: uppercase;">
+            </div>
+            <p class="form-error" id="joinRoomError"></p>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeJoinRoomModal()">Cancel</button>
+                <button class="btn btn-neon" id="joinRoomBtn" onclick="joinRoom()">Join Room</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-check-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+        let currentUser = null;
+
+        // Initialize dashboard
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const doc = await db.collection('users').doc(user.uid).get();
+                if (doc.exists) {
+                    currentUser = { id: doc.id, ...doc.data() };
+                    window.__currentUser = currentUser;
+                    updateUI();
+                    if (typeof subscribeNotifications === 'function') subscribeNotifications();
+                } else {
+                    // Konto w Auth istnieje, ale nie ma w Firestore – nie twórz go, przekieruj na login
+                    await auth.signOut();
+                    showToast('Konto nie istnieje w bazie. Zarejestruj się.', 'error');
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showToast('Błąd: ' + error.message, 'error');
+            }
+        });
+
+        async function acceptRoomInviteLocal(inviteId, roomId) {
+            try {
+                const roomSnap = await db.collection('rooms').doc(roomId).get();
+                if (!roomSnap.exists) { showToast('Pokój nie istnieje', 'error'); return; }
+                const r = roomSnap.data();
+                if (r.status !== 'waiting') { showToast('Gra już się rozpoczęła', 'error'); return; }
+                if (r.players.length >= r.maxPlayers) { showToast('Pokój pełny', 'error'); return; }
+                if (r.players.some(p => p.id === currentUser.id)) {
+                    window.location.href = 'room.html?id=' + roomId;
+                    return;
+                }
+                const pl = { id: currentUser.id, nickname: currentUser.nickname, suffix: currentUser.suffix, avatarUrl: currentUser.avatarUrl, isHost: false, isAlive: true, isReady: false };
+                await db.collection('rooms').doc(roomId).update({
+                    players: firebase.firestore.FieldValue.arrayUnion(pl),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await db.collection('roomInvites').doc(inviteId).delete();
+                showToast('Dołączono do pokoju!', 'success');
+                window.location.href = 'room.html?id=' + roomId;
+            } catch (e) {
+                showToast('Błąd: ' + e.message, 'error');
+            }
+        }
+
+        function updateUI() {
+            if (!currentUser) return;
+
+            // Sidebar
+            document.getElementById('sidebarName').textContent = currentUser.nickname;
+            document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
+            document.getElementById('sidebarAvatar').textContent = currentUser.nickname.charAt(0).toUpperCase();
+            
+            if (currentUser.avatarUrl) {
+                document.getElementById('sidebarAvatar').innerHTML = `<img src="${currentUser.avatarUrl}" alt="Avatar">`;
+            }
+
+            // Welcome
+            document.getElementById('welcomeName').textContent = currentUser.nickname;
+
+            // Stats
+            document.getElementById('statWins').textContent = currentUser.wins || 0;
+            document.getElementById('statLosses').textContent = currentUser.losses || 0;
+            document.getElementById('statTotal').textContent = currentUser.totalGames || 0;
+            document.getElementById('statWinrate').textContent = calculateWinrate(currentUser.wins || 0, currentUser.losses || 0) + '%';
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = 'login.html';
+            });
+        }
+
+        // Modal functions
+        function openCreateRoomModal() {
+            document.getElementById('createRoomModal').classList.add('show');
+        }
+
+        function closeCreateRoomModal() {
+            document.getElementById('createRoomModal').classList.remove('show');
+        }
+
+        function openJoinRoomModal() {
+            document.getElementById('joinRoomModal').classList.add('show');
+            document.getElementById('joinRoomCode').value = '';
+            document.getElementById('joinRoomError').classList.remove('show');
+        }
+
+        function closeJoinRoomModal() {
+            document.getElementById('joinRoomModal').classList.remove('show');
+        }
+
+        // Create Room
+        async function createRoom() {
+            const btn = document.getElementById('createRoomBtn');
+            btn.disabled = true;
+            btn.textContent = 'Creating...';
+
+            try {
+                const code = generateRoomCode();
+                const roomRef = await db.collection('rooms').add({
+                    code: code,
+                    hostId: currentUser.id,
+                    players: [{
+                        id: currentUser.id,
+                        nickname: currentUser.nickname,
+                        suffix: currentUser.suffix,
+                        avatarUrl: currentUser.avatarUrl,
+                        isHost: true,
+                        isAlive: true,
+                        isReady: true
+                    }],
+                    maxPlayers: 6,
+                    status: 'waiting',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast('Room created! Code: ' + code, 'success');
+                window.location.href = 'room.html?id=' + roomRef.id;
+            } catch (error) {
+                showToast('Failed to create room: ' + error.message, 'error');
+                console.error('Create room error:', error);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Create Room';
+            }
+        }
+
+        // Join Room
+        async function joinRoom() {
+            const code = document.getElementById('joinRoomCode').value.trim().toUpperCase();
+            const errorEl = document.getElementById('joinRoomError');
+            const btn = document.getElementById('joinRoomBtn');
+
+            if (!code) {
+                errorEl.textContent = 'Please enter a room code';
+                errorEl.classList.add('show');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Joining...';
+            errorEl.classList.remove('show');
+
+            try {
+                // Find room by code
+                const snapshot = await db.collection('rooms').where('code', '==', code).get();
+                
+                if (snapshot.empty) {
+                    errorEl.textContent = 'Room not found';
+                    errorEl.classList.add('show');
+                    return;
+                }
+
+                const roomDoc = snapshot.docs[0];
+                const roomData = roomDoc.data();
+
+                if (roomData.status !== 'waiting') {
+                    errorEl.textContent = 'Game already started';
+                    errorEl.classList.add('show');
+                    return;
+                }
+
+                if (roomData.players.length >= roomData.maxPlayers) {
+                    errorEl.textContent = 'Room is full';
+                    errorEl.classList.add('show');
+                    return;
+                }
+
+                if (roomData.players.some(p => p.id === currentUser.id)) {
+                    // Already in room, just redirect
+                    window.location.href = 'room.html?id=' + roomDoc.id;
+                    return;
+                }
+
+                // Add player to room
+                await db.collection('rooms').doc(roomDoc.id).update({
+                    players: firebase.firestore.FieldValue.arrayUnion({
+                        id: currentUser.id,
+                        nickname: currentUser.nickname,
+                        suffix: currentUser.suffix,
+                        avatarUrl: currentUser.avatarUrl,
+                        isHost: false,
+                        isAlive: true,
+                        isReady: false
+                    }),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast('Joined room!', 'success');
+                window.location.href = 'room.html?id=' + roomDoc.id;
+            } catch (error) {
+                errorEl.textContent = 'Failed to join room';
+                errorEl.classList.add('show');
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Join Room';
+            }
+        }
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('show');
+                }
+            });
+        });
+
+        // Handle Enter key in join room input
+        document.getElementById('joinRoomCode').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                joinRoom();
+            }
+        });
+    </script>
+</body>
+</html>
+

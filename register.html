@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Rulette Lie</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Background decorations -->
+        <div class="auth-bg-decoration purple" style="top: 30%; right: 20%;"></div>
+        <div class="auth-bg-decoration pink" style="bottom: 30%; left: 20%; background: rgba(6, 182, 212, 0.2);"></div>
+
+        <div class="auth-card glass">
+            <!-- Logo -->
+            <div class="auth-logo" style="background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="22" y1="12" x2="18" y2="12"></line>
+                    <line x1="6" y1="12" x2="2" y2="12"></line>
+                    <line x1="12" y1="6" x2="12" y2="2"></line>
+                    <line x1="12" y1="22" x2="12" y2="18"></line>
+                </svg>
+            </div>
+
+            <h1 class="auth-title" style="background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)); -webkit-background-clip: text;">Join the Game</h1>
+            <p class="auth-subtitle">Create your account and start playing</p>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label" for="nickname">Nickname</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <input type="text" id="nickname" class="form-input" placeholder="ghostWolf" required minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+">
+                    </div>
+                    <p class="form-hint">Your unique tag will be generated automatically (e.g., ghostWolf#A1B2C)</p>
+                    <p class="form-error" id="nicknameError"></p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                    </div>
+                    <p class="form-error" id="emailError"></p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input type="password" id="password" class="form-input" placeholder="At least 6 characters" required minlength="6">
+                    </div>
+                    <p class="form-error" id="passwordError"></p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm your password" required>
+                    </div>
+                    <p class="form-error" id="confirmPasswordError"></p>
+                </div>
+
+                <p class="form-error" id="generalError"></p>
+
+                <button type="submit" class="btn btn-neon btn-full btn-lg" id="registerBtn">
+                    Create Account
+                </button>
+
+                <p class="text-center mt-2" style="color: var(--text-muted);">
+                    Already have an account? <a href="login.html">Sign in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-check-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+        let isRegistering = false;
+
+        // Check if already logged in
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) return;
+            if (isRegistering) return;
+            try {
+                const doc = await db.collection('users').doc(user.uid).get();
+                if (doc.exists) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    await auth.signOut();
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        });
+
+        // Register form handler
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nickname = document.getElementById('nickname').value.trim();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const btn = document.getElementById('registerBtn');
+            const errorEl = document.getElementById('generalError');
+            
+            // Clear errors
+            document.querySelectorAll('.form-error').forEach(el => {
+                el.classList.remove('show');
+                el.textContent = '';
+            });
+            
+            // Validation
+            if (!/^[a-zA-Z0-9_]+$/.test(nickname)) {
+                document.getElementById('nicknameError').textContent = 'Only letters, numbers, and underscores allowed';
+                document.getElementById('nicknameError').classList.add('show');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = "Passwords don't match";
+                document.getElementById('confirmPasswordError').classList.add('show');
+                return;
+            }
+            
+            // Disable button
+            btn.disabled = true;
+            btn.textContent = 'Creating account...';
+            
+            try {
+                isRegistering = true;
+                // Create auth user
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const suffix = generateSuffix();
+                
+                // Create user document in Firestore
+                try {
+                    await db.collection('users').doc(userCredential.user.uid).set({
+                        id: userCredential.user.uid,
+                        email: email,
+                        nickname: nickname,
+                        suffix: suffix,
+                        avatarUrl: null,
+                        wins: 0,
+                        losses: 0,
+                        totalGames: 0,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch (fsError) {
+                    console.error('Firestore write error:', fsError);
+                    const fsMsg = (fsError && fsError.code) ? `${fsError.code}: ${fsError.message}` : (fsError && fsError.message ? fsError.message : 'Unknown Firestore error');
+                    errorEl.textContent = `Firestore save failed: ${fsMsg}`;
+                    errorEl.classList.add('show');
+                    throw fsError;
+                }
+                
+                showToast('Account created! Welcome to Rulette Lie!', 'success');
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                console.error('Registration error:', error);
+                try { await auth.signOut(); } catch (e) {}
+                let message = 'Registration failed: ' + error.message;
+                if (error && error.code) {
+                    message += ` (${error.code})`;
+                }
+                if (error.code === 'auth/email-already-in-use') {
+                    message = 'Email already in use';
+                } else if (error.code === 'auth/invalid-email') {
+                    message = 'Invalid email address';
+                } else if (error.code === 'auth/weak-password') {
+                    message = 'Password is too weak';
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    message = 'Email/Password sign-in is not enabled. Enable it in Firebase Console > Authentication > Sign-in method';
+                } else if (error.code === 'auth/configuration-not-found') {
+                    message = 'Firebase Auth not configured. Go to Firebase Console and enable Authentication.';
+                }
+                errorEl.textContent = message;
+                errorEl.classList.add('show');
+            } finally {
+                isRegistering = false;
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Rulette Lie</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-user">
+                <a href="profile.html" class="user-card">
+                    <div class="user-avatar" id="sidebarAvatar">?</div>
+                    <div class="user-info">
+                        <div class="user-name" id="sidebarName">Loading...</div>
+                        <div class="user-tag" id="sidebarTag">#00000</div>
+                    </div>
+                </a>
+            </div>
+            <div class="sidebar-divider"></div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Home</span></a>
+                <a href="leaderboard.html" class="nav-item active"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span>Leaderboard</span><div class="nav-indicator"></div></a>
+                <a href="friends.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Friends</span></a>
+                <a href="settings.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg><span>Rulette Lie</span></div>
+                <button class="btn btn-ghost btn-logout" onclick="logout()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Sign Out</span></button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <!-- Header -->
+                <div class="text-center mb-3">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="40" height="40" style="color: #fbbf24;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                        <h1 style="font-size: 2.5rem; font-weight: bold; background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Leaderboard</h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="40" height="40" style="color: #fbbf24;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                    </div>
+                    <p class="text-muted">Top 10 players with the most victories</p>
+                </div>
+
+                <!-- Podium -->
+                <div class="podium" id="podium">
+                    <!-- Will be filled by JS -->
+                </div>
+
+                <!-- Full List -->
+                <div class="card glass">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                            Rankings
+                        </h3>
+                    </div>
+                    <div class="leaderboard-list" id="leaderboardList">
+                        <div class="loading-screen" style="min-height: 200px;">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-check-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+        let currentUser = null;
+
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const doc = await db.collection('users').doc(user.uid).get();
+            if (doc.exists) {
+                currentUser = { id: doc.id, ...doc.data() };
+                updateSidebar();
+                loadLeaderboard();
+            }
+        });
+
+        function updateSidebar() {
+            document.getElementById('sidebarName').textContent = currentUser.nickname;
+            document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
+            document.getElementById('sidebarAvatar').textContent = currentUser.nickname.charAt(0).toUpperCase();
+        }
+
+        function loadLeaderboard() {
+            db.collection('users')
+                .orderBy('wins', 'desc')
+                .limit(10)
+                .onSnapshot((snapshot) => {
+                    const players = snapshot.docs.map((doc, index) => ({
+                        id: doc.id,
+                        rank: index + 1,
+                        ...doc.data(),
+                        winrate: calculateWinrate(doc.data().wins || 0, doc.data().losses || 0)
+                    }));
+
+                    renderPodium(players.slice(0, 3));
+                    renderList(players);
+                });
+        }
+
+        function renderPodium(top3) {
+            if (top3.length < 3) {
+                document.getElementById('podium').innerHTML = '';
+                return;
+            }
+
+            const [first, second, third] = top3;
+            document.getElementById('podium').innerHTML = `
+                <!-- 2nd Place -->
+                <div class="podium-place second">
+                    <div class="podium-avatar" style="background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));">
+                        ${second.avatarUrl ? `<img src="${second.avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : second.nickname.charAt(0).toUpperCase()}
+                    </div>
+                    <p class="podium-name">${second.nickname}</p>
+                    <p class="podium-tag">#${second.suffix}</p>
+                    <div class="podium-bar">
+                        <svg class="podium-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="color: #9ca3af;"><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>
+                    </div>
+                </div>
+
+                <!-- 1st Place -->
+                <div class="podium-place first">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32" style="color: #fbbf24; animation: bounce 1s infinite; margin-bottom: -1rem;"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                    <div class="podium-avatar" style="background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));">
+                        ${first.avatarUrl ? `<img src="${first.avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : first.nickname.charAt(0).toUpperCase()}
+                    </div>
+                    <p class="podium-name" style="font-weight: bold;">${first.nickname}</p>
+                    <p class="podium-tag">#${first.suffix}</p>
+                    <div class="podium-bar">
+                        <svg class="podium-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="color: #fbbf24; width: 40px; height: 40px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                    </div>
+                </div>
+
+                <!-- 3rd Place -->
+                <div class="podium-place third">
+                    <div class="podium-avatar" style="background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));">
+                        ${third.avatarUrl ? `<img src="${third.avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : third.nickname.charAt(0).toUpperCase()}
+                    </div>
+                    <p class="podium-name">${third.nickname}</p>
+                    <p class="podium-tag">#${third.suffix}</p>
+                    <div class="podium-bar">
+                        <svg class="podium-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="color: #d97706;"><path d="M12 15l-5.878 3.09 1.123-6.545L2.489 6.91l6.572-.955L12 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderList(players) {
+            if (players.length === 0) {
+                document.getElementById('leaderboardList').innerHTML = `
+                    <div class="text-center" style="padding: 3rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="64" height="64" style="color: var(--text-muted); margin-bottom: 1rem;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                        <p class="text-muted">No players yet</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Be the first to win a game!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('leaderboardList').innerHTML = players.map(player => {
+                const rankClass = player.rank === 1 ? 'gold' : player.rank === 2 ? 'silver' : player.rank === 3 ? 'bronze' : '';
+                const isYou = player.id === currentUser.id;
+                
+                return `
+                    <div class="leaderboard-item ${rankClass} ${isYou ? 'you' : ''}">
+                        <div class="leaderboard-rank">
+                            ${player.rank <= 3 ? 
+                                (player.rank === 1 ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24" style="color: #fbbf24;"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>' :
+                                 player.rank === 2 ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24" style="color: #9ca3af;"><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>' :
+                                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24" style="color: #d97706;"><path d="M12 15l-5.878 3.09 1.123-6.545L2.489 6.91l6.572-.955L12 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>') :
+                                player.rank
+                            }
+                        </div>
+                        <div class="leaderboard-avatar" style="${player.rank === 1 ? 'border: 3px solid #fbbf24;' : player.rank === 2 ? 'border: 3px solid #9ca3af;' : player.rank === 3 ? 'border: 3px solid #d97706;' : ''}">
+                            ${player.avatarUrl ? `<img src="${player.avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : player.nickname.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">
+                                ${player.nickname}
+                                ${isYou ? '<span class="badge badge-purple" style="font-size: 0.7rem; padding: 0.1rem 0.5rem;">You</span>' : ''}
+                            </div>
+                            <div class="player-tag">#${player.suffix}</div>
+                        </div>
+                        <div class="leaderboard-stats">
+                            <div class="leaderboard-wins">${player.wins || 0} wins</div>
+                            <div class="leaderboard-winrate">${player.winrate}% win rate</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function logout() {
+            auth.signOut().then(() => window.location.href = 'login.html');
+        }
+    </script>
+    <style>
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+    </style>
+</body>
+</html>
+

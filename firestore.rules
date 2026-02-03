@@ -1,0 +1,126 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isRoomMember(roomId) {
+      let room = get(/databases/$(database)/documents/rooms/$(roomId));
+      return isAuthenticated() && 
+             room != null && 
+             request.auth.uid in room.data.players[*].id;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Anyone can read user profiles (for leaderboards, friends)
+      allow read: if isAuthenticated();
+      
+      // Users can only create their own profile
+      allow create: if isOwner(userId);
+      
+      // Users can only update their own profile (limited fields)
+      allow update: if isOwner(userId) && 
+                       request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['avatarUrl', 'updatedAt', 'notificationsFriendRequests']);
+      
+      // Stats updates (wins, losses, totalGames) only via Cloud Functions
+      // Users cannot delete their profiles directly
+      allow delete: if false;
+      
+      // Friends subcollection
+      match /friends/{friendId} {
+        allow read: if isOwner(userId);
+        allow write: if isOwner(userId);
+      }
+    }
+    
+    // Friend requests collection
+    match /friendRequests/{requestId} {
+      // Users can read requests where they are sender or recipient
+      allow read: if isAuthenticated() && 
+                    (resource.data.fromUserId == request.auth.uid || 
+                     resource.data.toUserId == request.auth.uid);
+      
+      // Users can create requests from themselves
+      allow create: if isAuthenticated() && 
+                       request.resource.data.fromUserId == request.auth.uid &&
+                       request.resource.data.status == 'pending';
+      
+      // Recipients can update status (accept/reject)
+      allow update: if isAuthenticated() && 
+                       resource.data.toUserId == request.auth.uid &&
+                       request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['status']);
+      
+      allow delete: if false;
+    }
+    
+    // Room invites (lobby invites from friends)
+    match /roomInvites/{inviteId} {
+      allow read: if isAuthenticated() && resource.data.toUserId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.hostId == request.auth.uid;
+      allow update: if false;
+      allow delete: if isAuthenticated() && 
+                       (resource.data.toUserId == request.auth.uid || resource.data.hostId == request.auth.uid);
+    }
+    
+    // Rooms collection
+    match /rooms/{roomId} {
+      // Authenticated users can read rooms
+      allow read: if isAuthenticated();
+      
+      // Authenticated users can create rooms
+      allow create: if isAuthenticated() && 
+                       request.resource.data.hostId == request.auth.uid &&
+                       request.resource.data.status == 'waiting';
+      
+      // Room members can update (join/leave/ready)
+      // But cannot change game outcome or status directly
+      allow update: if isAuthenticated() && 
+                       // Cannot change hostId
+                       request.resource.data.hostId == resource.data.hostId &&
+                       // Cannot change status directly (only Cloud Functions)
+                       (request.resource.data.status == resource.data.status ||
+                        // Allow status change only by Cloud Functions
+                        request.resource.data.status == 'waiting') &&
+                       // Players array modifications allowed
+                       request.resource.data.diff(resource.data).affectedKeys()
+                         .hasAny(['players', 'updatedAt']);
+      
+      // Only empty rooms can be deleted (by Cloud Functions)
+      allow delete: if false;
+      
+      // Messages subcollection
+      match /messages/{messageId} {
+        // Room members can read messages
+        allow read: if isAuthenticated();
+        
+        // Room members can send messages
+        allow create: if isAuthenticated() && 
+                         request.resource.data.userId == request.auth.uid &&
+                         request.resource.data.roomId == roomId;
+        
+        // Messages cannot be edited or deleted by users
+        allow update, delete: if false;
+      }
+    }
+    
+    // Games collection
+    match /games/{gameId} {
+      // Authenticated users can read games
+      allow read: if isAuthenticated();
+      
+      // Games can only be created and modified by Cloud Functions
+      // This ensures anti-cheat protection
+      allow create, update, delete: if false;
+    }
+  }
+}
