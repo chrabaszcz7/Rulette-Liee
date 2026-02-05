@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - Rulette Lie</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-user">
+                <a href="profile.html" class="user-card">
+                    <div class="user-avatar" id="sidebarAvatar">?</div>
+                    <div class="user-info">
+                        <div class="user-name" id="sidebarName">Loading...</div>
+                        <div class="user-tag" id="sidebarTag">#00000</div>
+                        <div class="user-coins">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12h8M12 8v8" stroke="#0f0f1a" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span id="sidebarCoins">0</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="sidebar-divider"></div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Home</span>
+                </a>
+                <a href="leaderboard.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span>Leaderboard</span></a>
+                <a href="friends.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Friends</span></a>
+                <a href="shop.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2l1.5 4h9L18 2"></path><path d="M3 6h18l-1.5 14h-15z"></path><circle cx="9" cy="20" r="1"></circle><circle cx="15" cy="20" r="1"></circle></svg><span>Shop</span></a>
+                <a href="inventory.html" class="nav-item active"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v13H3z"></path><path d="M16 3H8l-2 4h12z"></path></svg><span>Inventory</span><div class="nav-indicator"></div></a>
+                <a href="settings.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Settings</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+                    <span>Rulette Lie</span>
+                </div>
+                <button class="btn btn-ghost btn-logout" onclick="logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <main class="main-content">
+            <div class="mobile-topbar">
+                <button class="btn btn-ghost btn-icon mobile-menu-btn" data-sidebar-toggle aria-label="Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div class="mobile-title">Rulette Lie</div>
+                <div class="mobile-spacer"></div>
+            </div>
+
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div class="page-header">
+                    <h1 class="page-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M3 7h18v13H3z"></path><path d="M16 3H8l-2 4h12z"></path></svg>
+                        Inventory
+                    </h1>
+                    <p class="page-subtitle">Your items and active effect</p>
+                </div>
+
+                <div class="card glass mb-3">
+                    <div class="card-header">
+                    <h3 class="card-title">Active Effects</h3>
+                </div>
+                    <div class="text-muted">
+                        <div id="activeNickEffect">Nickname: None</div>
+                        <div id="activeBadgeEffect">Badge: None</div>
+                        <div id="activeFrameEffect">Avatar frame: Default</div>
+                    </div>
+                </div>
+
+                <div class="card glass">
+                    <div class="card-header">
+                        <h3 class="card-title">Items</h3>
+                    </div>
+                    <div class="inventory-grid" id="inventoryList"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-check-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/ui.js"></script>
+    <script>
+        let currentUser = null;
+        const ITEM_MAP = {
+            'nick-neon-rainbow': 'Colorful neon nickname',
+            'nick-neon-red': 'Red neon nickname',
+            'nick-neon-blue': 'Blue neon nickname',
+            'nick-neon-green': 'Green neon nickname',
+            'profile-banner': 'Profile banner',
+            'profile-theme-red': 'Profile theme: Red',
+            'profile-theme-green': 'Profile theme: Green',
+            'profile-theme-pink': 'Profile theme: Pink',
+            'profile-theme-purple': 'Profile theme: Purple',
+            'profile-theme-blue': 'Profile theme: Blue',
+            'profile-theme-black': 'Profile theme: Black',
+            'profile-theme-white': 'Profile theme: White',
+            'avatar-frame-red': 'Avatar frame: Red',
+            'avatar-frame-green': 'Avatar frame: Green',
+            'avatar-frame-rainbow': 'Avatar frame: Rainbow',
+            'avatar-frame-purple': 'Avatar frame: Purple',
+            'avatar-frame-blue': 'Avatar frame: Blue',
+            'avatar-frame-black': 'Avatar frame: Black',
+            'avatar-frame-white': 'Avatar frame: White',
+            'badge-middle-finger': 'Badge: 🖕🏻',
+            'badge-blind': 'Badge: 🧑🏻‍🦯',
+            'badge-rose': 'Badge: 🥀',
+            'badge-skull': 'Badge: 💀',
+            'badge-wheelchair': 'Badge: 🧑🏻‍🦽'
+        };
+        const THEME_MAP = {
+            'profile-theme-red': 'red',
+            'profile-theme-green': 'green',
+            'profile-theme-pink': 'pink',
+            'profile-theme-purple': 'purple',
+            'profile-theme-blue': 'blue',
+            'profile-theme-black': 'black',
+            'profile-theme-white': 'white'
+        };
+        const FRAME_MAP = {
+            'avatar-frame-red': 'red',
+            'avatar-frame-green': 'green',
+            'avatar-frame-rainbow': 'rainbow',
+            'avatar-frame-purple': 'purple',
+            'avatar-frame-blue': 'blue',
+            'avatar-frame-black': 'black',
+            'avatar-frame-white': 'white'
+        };
+        const BADGE_MAP = {
+            'badge-middle-finger': '🖕🏻',
+            'badge-blind': '🧑🏻‍🦯',
+            'badge-rose': '🥀',
+            'badge-skull': '💀',
+            'badge-wheelchair': '🧑🏻‍🦽'
+        };
+
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            db.collection('users').doc(user.uid).onSnapshot(async (doc) => {
+                if (!doc.exists) return;
+                currentUser = { id: doc.id, ...doc.data() };
+                currentUser = await ensureEloSeason(currentUser);
+                updateSidebar();
+                renderInventory();
+            });
+        });
+
+        function updateSidebar() {
+            document.getElementById('sidebarCoins').textContent = currentUser.coins || 0;
+            document.getElementById('sidebarName').innerHTML = renderNickHTML(currentUser.nickname, currentUser.activeNickEffect, currentUser.profileBadge);
+            document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
+            document.getElementById('sidebarAvatar').textContent = currentUser.nickname.charAt(0).toUpperCase();
+            if (currentUser.avatarUrl) {
+                document.getElementById('sidebarAvatar').innerHTML = `<img src="${currentUser.avatarUrl}" alt="Avatar">`;
+            }
+            applyAvatarFrame(document.getElementById('sidebarAvatar'), currentUser.avatarFrame);
+        }
+
+        function renderInventory() {
+            const list = document.getElementById('inventoryList');
+            const active = currentUser.activeNickEffect || null;
+            const activeIsNick = active && active.startsWith('nick-');
+            document.getElementById('activeNickEffect').innerHTML = 'Nickname: ' + (activeIsNick ? renderNickHTML(ITEM_MAP[active] || active, active) : 'None');
+            document.getElementById('activeBadgeEffect').textContent = 'Badge: ' + (currentUser.profileBadge || 'None');
+            const frameId = `avatar-frame-${currentUser.avatarFrame || 'default'}`;
+            const frameLabel = (currentUser.avatarFrame || 'default') === 'default'
+                ? 'Default'
+                : (ITEM_MAP[frameId] || currentUser.avatarFrame);
+            const frameContent = (currentUser.avatarFrame || 'default') === 'default'
+                ? frameLabel
+                : formatInventoryLabel(frameId, frameLabel);
+            document.getElementById('activeFrameEffect').innerHTML = 'Avatar frame: ' + frameContent;
+
+            const items = Array.isArray(currentUser.inventory) ? currentUser.inventory : [];
+            if (items.length === 0) {
+                list.innerHTML = '<div class="text-muted">No items</div>';
+                return;
+            }
+
+            const counts = items.reduce((acc, id) => {
+                acc[id] = (acc[id] || 0) + 1;
+                return acc;
+            }, {});
+
+            list.innerHTML = Object.keys(counts).map(id => {
+                const label = ITEM_MAP[id] || id;
+                const isActive = active === id;
+                const isNickItem = id.startsWith('nick-');
+                const isThemeItem = id.startsWith('profile-theme-');
+                const isFrameItem = id.startsWith('avatar-frame-');
+                const isBadgeItem = id.startsWith('badge-');
+                const isBannerItem = id === 'profile-banner';
+                const content = formatInventoryLabel(id, label);
+                const isEquippedTheme = isThemeItem && (currentUser.profileTheme || 'default') === THEME_MAP[id];
+                const isEquippedFrame = isFrameItem && (currentUser.avatarFrame || 'default') === FRAME_MAP[id];
+                const isEquippedBadge = isBadgeItem && (currentUser.profileBadge || '') === BADGE_MAP[id];
+                const showEquip = isNickItem || isThemeItem || isFrameItem || isBadgeItem;
+                const equipLabel = isNickItem
+                    ? (isActive ? 'Unequip' : 'Equip')
+                    : (isEquippedTheme || isEquippedFrame || isEquippedBadge) ? 'Unequip' : 'Equip';
+                return `
+                    <div class="inventory-item">
+                        <div>
+                            ${content} (${counts[id]})
+                            ${isBannerItem ? `<div class="text-muted" style="font-size: 0.8rem; margin-top: 0.25rem;">Set your banner image in Settings.</div>` : ''}
+                        </div>
+                        ${showEquip ? `
+                            <button class="btn ${(isActive || isEquippedTheme || isEquippedFrame || isEquippedBadge) ? 'btn-ghost' : 'btn-neon'} btn-sm" onclick="equipItem('${id}')">
+                                ${equipLabel}
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatInventoryLabel(id, label) {
+            if (id.startsWith('nick-')) return renderNickHTML(label, id);
+            if (id === 'profile-theme-red') return `<span class="nick nick-neon-red">${label}</span>`;
+            if (id === 'profile-theme-green') return `<span class="nick nick-neon-green">${label}</span>`;
+            if (id === 'profile-theme-blue') return `<span class="nick nick-neon-blue">${label}</span>`;
+            if (id === 'profile-theme-pink') return `<span style="color:#ec4899;">${label}</span>`;
+            if (id === 'profile-theme-purple') return `<span style="color:#a855f7;">${label}</span>`;
+            if (id === 'profile-theme-black') return `<span style="color:#111827;">${label}</span>`;
+            if (id === 'profile-theme-white') return `<span style="color:#f8fafc;">${label}</span>`;
+            if (id === 'avatar-frame-rainbow') return `<span class="nick nick-neon-rainbow">${label}</span>`;
+            if (id === 'avatar-frame-red') return `<span class="nick nick-neon-red">${label}</span>`;
+            if (id === 'avatar-frame-green') return `<span class="nick nick-neon-green">${label}</span>`;
+            if (id === 'avatar-frame-blue') return `<span class="nick nick-neon-blue">${label}</span>`;
+            return label;
+        }
+
+        async function equipItem(itemId) {
+            if (!currentUser) return;
+            try {
+                if (itemId.startsWith('nick-')) {
+                    const isActive = currentUser.activeNickEffect === itemId;
+                    await db.collection('users').doc(currentUser.id).update({
+                        activeNickEffect: isActive ? null : itemId,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    currentUser.activeNickEffect = isActive ? null : itemId;
+                    showToast(isActive ? 'Effect removed' : 'Effect equipped', 'success');
+                    renderInventory();
+                    return;
+                }
+
+                if (itemId.startsWith('profile-theme-')) {
+                    const next = THEME_MAP[itemId] || 'default';
+                    const isEquipped = (currentUser.profileTheme || 'default') === next;
+                    await db.collection('users').doc(currentUser.id).update({
+                        profileTheme: isEquipped ? 'default' : next,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    currentUser.profileTheme = isEquipped ? 'default' : next;
+                    showToast(isEquipped ? 'Theme removed' : 'Theme equipped', 'success');
+                    renderInventory();
+                    return;
+                }
+
+                if (itemId.startsWith('avatar-frame-')) {
+                    const next = FRAME_MAP[itemId] || 'default';
+                    const isEquipped = (currentUser.avatarFrame || 'default') === next;
+                    await db.collection('users').doc(currentUser.id).update({
+                        avatarFrame: isEquipped ? 'default' : next,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    currentUser.avatarFrame = isEquipped ? 'default' : next;
+                    showToast(isEquipped ? 'Frame removed' : 'Frame equipped', 'success');
+                    renderInventory();
+                    return;
+                }
+
+                if (itemId.startsWith('badge-')) {
+                    const next = BADGE_MAP[itemId] || null;
+                    const isEquipped = (currentUser.profileBadge || '') === next;
+                    await db.collection('users').doc(currentUser.id).update({
+                        profileBadge: isEquipped ? null : next,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    currentUser.profileBadge = isEquipped ? null : next;
+                    showToast(isEquipped ? 'Badge removed' : 'Badge equipped', 'success');
+                    renderInventory();
+                }
+            } catch (e) {
+                showToast('Failed to update item', 'error');
+            }
+        }
+
+        async function setActive(itemId, isActive) {
+            if (!currentUser) return;
+            try {
+                await db.collection('users').doc(currentUser.id).update({
+                    activeNickEffect: isActive ? null : itemId,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showToast(isActive ? 'Effect removed' : 'Effect equipped', 'success');
+            } catch (e) {
+                showToast('Failed to set effect', 'error');
+            }
+        }
+
+        function logout() {
+            auth.signOut().then(() => window.location.href = 'login.html');
+        }
+    </script>
+</body>
+</html>

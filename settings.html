@@ -17,6 +17,13 @@
                     <div class="user-info">
                         <div class="user-name" id="sidebarName">Loading...</div>
                         <div class="user-tag" id="sidebarTag">#00000</div>
+                        <div class="user-coins">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12h8M12 8v8" stroke="#0f0f1a" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span id="sidebarCoins">0</span>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -25,6 +32,8 @@
                 <a href="dashboard.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Home</span></a>
                 <a href="leaderboard.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span>Leaderboard</span></a>
                 <a href="friends.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Friends</span></a>
+                <a href="shop.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2l1.5 4h9L18 2"></path><path d="M3 6h18l-1.5 14h-15z"></path><circle cx="9" cy="20" r="1"></circle><circle cx="15" cy="20" r="1"></circle></svg><span>Shop</span></a>
+                <a href="inventory.html" class="nav-item"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v13H3z"></path><path d="M16 3H8l-2 4h12z"></path></svg><span>Inventory</span></a>
                 <a href="settings.html" class="nav-item active"><svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span><div class="nav-indicator"></div></a>
             </nav>
             <div class="sidebar-footer">
@@ -32,9 +41,21 @@
                 <button class="btn btn-ghost btn-logout" onclick="logout()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Sign Out</span></button>
             </div>
         </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <!-- Main Content -->
         <main class="main-content">
+            <div class="mobile-topbar">
+                <button class="btn btn-ghost btn-icon mobile-menu-btn" data-sidebar-toggle aria-label="Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="mobile-title">Rulette Lie</div>
+                <div class="mobile-spacer"></div>
+            </div>
             <div style="max-width: 800px; margin: 0 auto;">
                 <div class="page-header">
                     <h1 class="page-title">
@@ -53,7 +74,7 @@
                         </h3>
                     </div>
                     <p class="text-muted mb-2">Your account information</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="settings-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="form-group">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-input" id="settingsEmail" disabled style="opacity: 0.6;">
@@ -71,9 +92,14 @@
                         <p class="form-hint">Paste a direct image link (e.g. Discord media). Leave empty to remove avatar.</p>
                     </div>
                     <div class="form-group" style="margin-top: 1rem;">
-                        <label class="form-label">Bio / Opis</label>
-                        <textarea class="form-input" id="settingsBio" rows="3" placeholder="Napisz coś o sobie..."></textarea>
-                        <p class="form-hint">Max 200 znaków.</p>
+                        <label class="form-label">Profile Banner URL</label>
+                        <input type="url" class="form-input" id="settingsBannerUrl" placeholder="https://media.discordapp.net/...">
+                        <p class="form-hint">Requires Profile Design case drop. Leave empty to remove banner. All other profile design items are equipped in Inventory.</p>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label class="form-label">Bio</label>
+                        <textarea class="form-input" id="settingsBio" rows="3" placeholder="Write something about yourself..."></textarea>
+                        <p class="form-hint">Max 200 characters.</p>
                     </div>
                 </div>
 
@@ -100,14 +126,14 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" style="color: var(--neon-pink);"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                            Powiadomienia
+                            Notifications
                         </h3>
                     </div>
-                    <p class="text-muted mb-2">Preferencje powiadomień</p>
+                    <p class="text-muted mb-2">Notification preferences</p>
                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 12px;">
                         <div>
-                            <p style="font-weight: 500;">Powiadomienia o zaproszeniach do znajomych</p>
-                            <p class="text-muted" style="font-size: 0.85rem;">Wyświetlaj Notyfikacje, gdy ktoś wyśle ci zaproszenie do znajomych</p>
+                            <p style="font-weight: 500;">Friend request notifications</p>
+                            <p class="text-muted" style="font-size: 0.85rem;">Show notifications when someone sends a friend request</p>
                         </div>
                         <button class="btn btn-neon btn-sm" id="notifBtn" onclick="toggleNotifications()">Enabled</button>
                     </div>
@@ -156,10 +182,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/ui.js"></script>
     <script>
         let currentUser = null;
         let soundEnabled = true;
         let notificationsEnabled = true;
+        
 
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
@@ -170,6 +199,7 @@
             const doc = await db.collection('users').doc(user.uid).get();
             if (doc.exists) {
                 currentUser = { id: doc.id, ...doc.data() };
+                currentUser = await ensureEloSeason(currentUser);
                 updateSidebar();
                 updateSettings();
             }
@@ -196,9 +226,11 @@
         }
 
         function updateSidebar() {
-            document.getElementById('sidebarName').textContent = currentUser.nickname;
+            document.getElementById('sidebarCoins').textContent = currentUser.coins || 0;
+            document.getElementById('sidebarName').innerHTML = renderNickHTML(currentUser.nickname, currentUser.activeNickEffect, currentUser.profileBadge);
             document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
             renderAvatar(document.getElementById('sidebarAvatar'), currentUser.nickname, currentUser.avatarUrl);
+            applyAvatarFrame(document.getElementById('sidebarAvatar'), currentUser.avatarFrame);
         }
 
         function updateSettings() {
@@ -206,6 +238,7 @@
             document.getElementById('settingsNickname').value = currentUser.nickname;
             document.getElementById('settingsTag').textContent = '#' + currentUser.suffix;
             document.getElementById('settingsAvatarUrl').value = currentUser.avatarUrl || '';
+            document.getElementById('settingsBannerUrl').value = currentUser.bannerUrl || '';
             document.getElementById('settingsBio').value = currentUser.bio || '';
 
             soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
@@ -224,10 +257,19 @@
             notifBtn.className = notificationsEnabled ? 'btn btn-neon btn-sm' : 'btn btn-ghost btn-sm';
         }
 
+        function hasItem(itemId) {
+            if (!itemId) return true;
+            const items = Array.isArray(currentUser.inventory) ? currentUser.inventory : [];
+            return items.includes(itemId);
+        }
+
         function toggleSound() {
             soundEnabled = !soundEnabled;
             localStorage.setItem('soundEnabled', soundEnabled);
             updateButtons();
+            if (window.AudioFX && typeof AudioFX.isEnabled === 'function') {
+                AudioFX.isEnabled();
+            }
         }
 
         async function toggleNotifications() {
@@ -240,7 +282,7 @@
                 currentUser.notificationsFriendRequests = notificationsEnabled;
                 if (window.__currentUser) window.__currentUser.notificationsFriendRequests = notificationsEnabled;
             } catch (e) {
-                showToast('BĹ‚Ä…d: ' + (e && e.message), 'error');
+                showToast('Error: ' + (e && e.message), 'error');
                 notificationsEnabled = !notificationsEnabled;
             }
             updateButtons();
@@ -250,14 +292,25 @@
             const avatarInput = document.getElementById('settingsAvatarUrl');
             const avatarRaw = avatarInput.value;
             const avatarUrl = normalizeAvatarUrl(avatarRaw);
+            const bannerInput = document.getElementById('settingsBannerUrl');
+            const bannerRaw = bannerInput.value;
+            const bannerUrl = normalizeAvatarUrl(bannerRaw);
             const bioInput = document.getElementById('settingsBio');
             const bioRaw = (bioInput.value || '').trim();
             if (avatarRaw.trim() && !avatarUrl) {
-                showToast('Nieprawidlowy link do obrazka.', 'error');
+                showToast('Invalid image link.', 'error');
+                return;
+            }
+            if (bannerRaw.trim() && !bannerUrl) {
+                showToast('Invalid banner link.', 'error');
+                return;
+            }
+            if (bannerUrl && !hasItem('profile-banner')) {
+                showToast('Banner not unlocked yet.', 'error');
                 return;
             }
             if (bioRaw.length > 200) {
-                showToast('Bio jest zbyt dlugie (max 200 znakow).', 'error');
+                showToast('Bio is too long (max 200 characters).', 'error');
                 return;
             }
             try {
@@ -265,17 +318,22 @@
                 if ((currentUser.avatarUrl || null) !== (avatarUrl || null)) {
                     updates.avatarUrl = avatarUrl || null;
                 }
+                if ((currentUser.bannerUrl || null) !== (bannerUrl || null)) {
+                    updates.bannerUrl = bannerUrl || null;
+                }
                 if ((currentUser.bio || '') !== bioRaw) {
                     updates.bio = bioRaw || null;
                 }
                 await db.collection('users').doc(currentUser.id).update(updates);
                 currentUser.avatarUrl = avatarUrl || null;
+                currentUser.bannerUrl = bannerUrl || null;
                 currentUser.bio = bioRaw || null;
                 if (window.__currentUser) window.__currentUser.avatarUrl = currentUser.avatarUrl;
+                if (window.__currentUser) window.__currentUser.bannerUrl = currentUser.bannerUrl;
                 renderAvatar(document.getElementById('sidebarAvatar'), currentUser.nickname, currentUser.avatarUrl);
-                showToast('Zapisano!', 'success');
+                showToast('Saved!', 'success');
             } catch (e) {
-                showToast('BĹ‚Ä…d: ' + (e && e.message), 'error');
+                showToast('Error: ' + (e && e.message), 'error');
             }
         }
 
@@ -293,4 +351,5 @@
     </script>
 </body>
 </html>
+
 

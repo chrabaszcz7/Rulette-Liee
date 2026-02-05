@@ -1,4 +1,4 @@
-// Firebase Configuration
+﻿// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDENPSEHJG4EzJRnWTbGPY39-WFGgOx4QA",
   authDomain: "ruletka-lie.firebaseapp.com",
@@ -71,6 +71,121 @@ function formatTime(timestamp) {
     if (!timestamp) return '';
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     return date.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatDateTime(timestamp) {
+    if (!timestamp) return '';
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    const d = date.toLocaleDateString('pl-PL');
+    const t = date.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+    return `${d} ${t}`;
+}
+
+function getSeasonKey(date) {
+    const d = date || new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    return `${y}-${m}`;
+}
+
+function getSeasonLabel(seasonKey) {
+    if (!seasonKey) return '';
+    const parts = seasonKey.split('-');
+    if (parts.length !== 2) return '';
+    const year = parts[0];
+    const monthIdx = Number(parts[1]) - 1;
+    const date = new Date(Number(year), monthIdx, 1);
+    const monthName = date.toLocaleDateString('en-US', { month: 'long' });
+    return `${monthName} sezon ${year}`;
+}
+
+function getEloLevel(elo) {
+    if (elo >= 2001) return 10;
+    if (elo >= 1751) return 9;
+    if (elo >= 1531) return 8;
+    if (elo >= 1351) return 7;
+    if (elo >= 1201) return 6;
+    if (elo >= 1051) return 5;
+    if (elo >= 901) return 4;
+    if (elo >= 751) return 3;
+    if (elo >= 501) return 2;
+    if (elo >= 100) return 1;
+    return 0;
+}
+
+function ensureEloSeason(user) {
+    if (!user || !user.id) return Promise.resolve(user);
+    const currentKey = getSeasonKey();
+    if (!user.eloSeasonKey) {
+        const initialElo = 1000;
+        const initialRank = getEloLevel(initialElo);
+        const updates = {
+            elo: initialElo,
+            eloSeasonKey: currentKey,
+            eloRankLevel: initialRank,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        return db.collection('users').doc(user.id).update(updates).then(() => {
+            return { ...user, elo: initialElo, eloSeasonKey: currentKey, eloRankLevel: initialRank };
+        }).catch(() => user);
+    }
+    if (user.eloSeasonKey === currentKey) {
+        if (typeof user.elo !== 'number') {
+            const fixedElo = 1000;
+            const fixedRank = getEloLevel(fixedElo);
+            return db.collection('users').doc(user.id).update({
+                elo: fixedElo,
+                eloRankLevel: fixedRank,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => ({ ...user, elo: fixedElo, eloRankLevel: fixedRank })).catch(() => user);
+        }
+        return Promise.resolve(user);
+    }
+
+    const preservedRank = getEloLevel(user.elo || 0);
+    const updates = {
+        elo: 0,
+        eloSeasonKey: currentKey,
+        eloRankLevel: preservedRank,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    return db.collection('users').doc(user.id).update(updates).then(() => {
+        return { ...user, elo: 0, eloSeasonKey: currentKey, eloRankLevel: preservedRank };
+    }).catch(() => user);
+}
+
+function getEloDelta(min = 25, max = 30) {
+    const lo = Math.min(min, max);
+    const hi = Math.max(min, max);
+    return Math.floor(Math.random() * (hi - lo + 1)) + lo;
+}
+
+function getBaseEloForSeason(data, seasonKey) {
+    if (!data || !data.eloSeasonKey) return 1000;
+    if (data.eloSeasonKey !== seasonKey) return 0;
+    if (typeof data.elo !== 'number') return 1000;
+    return data.elo;
+}
+
+function renderNickHTML(nickname, nickEffect, badge) {
+    const effectClass = nickEffect ? `nick ${nickEffect}` : 'nick';
+    const badgeHtml = badge ? ` <span class="nick-badge">${badge}</span>` : '';
+    return `<span class="${effectClass}">${nickname}</span>${badgeHtml}`;
+}
+
+const AVATAR_FRAME_CLASSES = ['avatar-frame-red', 'avatar-frame-green', 'avatar-frame-rainbow', 'avatar-frame-purple', 'avatar-frame-blue', 'avatar-frame-black', 'avatar-frame-white'];
+
+function getAvatarFrameClass(frame) {
+    if (!frame || frame === 'default') return '';
+    return `avatar-frame-${frame}`;
+}
+
+function applyAvatarFrame(el, frame) {
+    if (!el || !el.classList) return;
+    el.classList.remove(...AVATAR_FRAME_CLASSES);
+    const cls = getAvatarFrameClass(frame);
+    if (cls) el.classList.add(cls);
 }
 
 // Toast notification
@@ -180,7 +295,7 @@ function subscribeNotifications() {
                 var d = ch.doc.data();
                 if (u.notificationsFriendRequests === false) return;
                 if (typeof showToast === 'function')
-                    showToast((d.fromNickname || 'Ktoś') + ' zaprosił Cię do znajomych!', 'info');
+                    showToast((d.fromNickname || 'Someone') + ' sent you a friend request!', 'info');
             });
             _notifFirstFriend = false;
         });
@@ -193,11 +308,11 @@ function subscribeNotifications() {
                 var d = ch.doc.data();
                 var inviteId = ch.doc.id;
                 var rid = d.roomId;
-                var host = d.hostNickname || 'Ktoś';
+                var host = d.hostNickname || 'Someone';
                 if (typeof showToastWithActions !== 'function') return;
-                showToastWithActions(host + ' zaprosił Cię do lobby!', 'info', [
-                    { label: 'Dołącz', primary: true, onClick: function() { acceptRoomInvite(inviteId, rid); } },
-                    { label: 'Odrzuć', primary: false, onClick: function() { declineRoomInvite(inviteId); } }
+                showToastWithActions(host + ' invited you to the lobby!', 'info', [
+                    { label: 'Join', primary: true, onClick: function() { acceptRoomInvite(inviteId, rid); } },
+                    { label: 'Decline', primary: false, onClick: function() { declineRoomInvite(inviteId); } }
                 ]);
             });
             _notifFirstInvite = false;
@@ -208,16 +323,16 @@ function acceptRoomInvite(inviteId, roomId) {
     var u = window.__currentUser;
     if (!u) return;
     db.collection('rooms').doc(roomId).get().then(function(roomSnap) {
-        if (!roomSnap.exists) { showToast('Pokój nie istnieje', 'error'); throw new Error('stop'); }
+        if (!roomSnap.exists) { showToast('Room does not exist', 'error'); throw new Error('stop'); }
         var r = roomSnap.data();
-        if (r.status !== 'waiting') { showToast('Gra już się rozpoczęła', 'error'); throw new Error('stop'); }
-        if (r.players.length >= r.maxPlayers) { showToast('Pokój pełny', 'error'); throw new Error('stop'); }
+        if (r.status !== 'waiting') { showToast('Game already started', 'error'); throw new Error('stop'); }
+        if (r.players.length >= r.maxPlayers) { showToast('Room is full', 'error'); throw new Error('stop'); }
         if (r.players.some(function(p) { return p.id === u.id; })) {
             db.collection('roomInvites').doc(inviteId).delete().catch(function() {});
             window.location.href = 'room.html?id=' + roomId;
             throw new Error('stop');
         }
-        var pl = { id: u.id, nickname: u.nickname, suffix: u.suffix, avatarUrl: u.avatarUrl || null, isHost: false, isAlive: true, isReady: false };
+        var pl = { id: u.id, nickname: u.nickname, suffix: u.suffix, avatarUrl: u.avatarUrl || null, nickEffect: u.activeNickEffect || null, profileBadge: u.profileBadge || null, avatarFrame: u.avatarFrame || 'default', isHost: false, isAlive: true, isReady: false };
         return db.collection('rooms').doc(roomId).update({
             players: firebase.firestore.FieldValue.arrayUnion(pl),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -225,14 +340,16 @@ function acceptRoomInvite(inviteId, roomId) {
     }).then(function() {
         return db.collection('roomInvites').doc(inviteId).delete();
     }).then(function() {
-        showToast('Dołączono do pokoju!', 'success');
+        showToast('Joined room!', 'success');
         window.location.href = 'room.html?id=' + roomId;
     }).catch(function(e) {
         if (e && e.message === 'stop') return;
-        showToast('Błąd: ' + (e && e.message ? e.message : 'Błąd'), 'error');
+        showToast('Error: ' + (e && e.message ? e.message : 'Error'), 'error');
     });
 }
 
 function declineRoomInvite(inviteId) {
     db.collection('roomInvites').doc(inviteId).delete().catch(function() {});
 }
+
+

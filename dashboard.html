@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -17,6 +17,13 @@
                     <div class="user-info">
                         <div class="user-name" id="sidebarName">Loading...</div>
                         <div class="user-tag" id="sidebarTag">#00000</div>
+                        <div class="user-coins">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12h8M12 8v8" stroke="#0f0f1a" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span id="sidebarCoins">0</span>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -52,6 +59,22 @@
                     </svg>
                     <span>Friends</span>
                 </a>
+                <a href="shop.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2l1.5 4h9L18 2"></path>
+                        <path d="M3 6h18l-1.5 14h-15z"></path>
+                        <circle cx="9" cy="20" r="1"></circle>
+                        <circle cx="15" cy="20" r="1"></circle>
+                    </svg>
+                    <span>Shop</span>
+                </a>
+                <a href="inventory.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7h18v13H3z"></path>
+                        <path d="M16 3H8l-2 4h12z"></path>
+                    </svg>
+                    <span>Inventory</span>
+                </a>
                 <a href="settings.html" class="nav-item">
                     <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="3"></circle>
@@ -82,16 +105,35 @@
                 </button>
             </div>
         </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <!-- Main Content -->
         <main class="main-content">
+            <div class="mobile-topbar">
+                <button class="btn btn-ghost btn-icon mobile-menu-btn" data-sidebar-toggle aria-label="Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="mobile-title">Rulette Lie</div>
+                <div class="mobile-spacer"></div>
+            </div>
             <div style="max-width: 1200px; margin: 0 auto;">
                 <!-- Welcome Header -->
                 <div class="text-center mb-3">
-                    <h1 style="font-size: 2.5rem; font-weight: bold; background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink), var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                        Welcome back, <span id="welcomeName">Player</span>!
+                    <h1 class="welcome-title" style="font-size: 2.5rem; font-weight: bold;">
+                        <span class="welcome-gradient">Welcome back,</span> <span id="welcomeName">Player</span>!
                     </h1>
                     <p class="text-muted" style="font-size: 1.1rem;">Ready to test your luck?</p>
+                    <div style="margin-top: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+                        <div class="rank-badge" id="welcomeRankBadge" title="">
+                            <span class="rank-dot"></span>
+                            <span id="welcomeRankLabel">Level 0</span>
+                        </div>
+                        <div class="elo-text" id="welcomeElo">0 ELO</div>
+                    </div>
                 </div>
 
                 <!-- Stats Grid -->
@@ -155,7 +197,7 @@
                             How to Play
                         </h3>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; color: var(--text-secondary);">
+                    <div class="how-to-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; color: var(--text-secondary);">
                         <div>
                             <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(168, 85, 247, 0.2); color: var(--neon-purple); display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">1</span>
@@ -168,7 +210,7 @@
                                 <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(168, 85, 247, 0.2); color: var(--neon-purple); display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">2</span>
                                 Mission
                             </h4>
-                            <p style="font-size: 0.9rem; padding-left: 2rem;">The Mission Player receives a secret mission: <span style="color: var(--neon-green);">TRUTH</span> or <span style="color: var(--error);">LIE</span>.</p>
+                            <p style="font-size: 0.9rem; padding-left: 2rem;">The Mission Player receives a secret Mission: <span style="color: var(--neon-green);">TRUTH</span> or <span style="color: var(--error);">LIE</span>.</p>
                         </div>
                         <div>
                             <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
@@ -240,6 +282,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/ui.js"></script>
     <script>
         let currentUser = null;
 
@@ -254,42 +298,43 @@
                 const doc = await db.collection('users').doc(user.uid).get();
                 if (doc.exists) {
                     currentUser = { id: doc.id, ...doc.data() };
+                    currentUser = await ensureEloSeason(currentUser);
                     window.__currentUser = currentUser;
                     updateUI();
                     if (typeof subscribeNotifications === 'function') subscribeNotifications();
                 } else {
-                    // Konto w Auth istnieje, ale nie ma w Firestore – nie twórz go, przekieruj na login
+                    // Auth account exists but missing in Firestore - do not create it, redirect to login
                     await auth.signOut();
-                    showToast('Konto nie istnieje w bazie. Zarejestruj się.', 'error');
+                    showToast('Account not found. Please register.', 'error');
                     window.location.href = 'login.html';
                 }
             } catch (error) {
                 console.error('Error loading user data:', error);
-                showToast('Błąd: ' + error.message, 'error');
+                showToast('Error: ' + error.message, 'error');
             }
         });
 
         async function acceptRoomInviteLocal(inviteId, roomId) {
             try {
                 const roomSnap = await db.collection('rooms').doc(roomId).get();
-                if (!roomSnap.exists) { showToast('Pokój nie istnieje', 'error'); return; }
+                if (!roomSnap.exists) { showToast('Room does not exist', 'error'); return; }
                 const r = roomSnap.data();
-                if (r.status !== 'waiting') { showToast('Gra już się rozpoczęła', 'error'); return; }
-                if (r.players.length >= r.maxPlayers) { showToast('Pokój pełny', 'error'); return; }
+                if (r.status !== 'waiting') { showToast('Game already started', 'error'); return; }
+                if (r.players.length >= r.maxPlayers) { showToast('Room is full', 'error'); return; }
                 if (r.players.some(p => p.id === currentUser.id)) {
                     window.location.href = 'room.html?id=' + roomId;
                     return;
                 }
-                const pl = { id: currentUser.id, nickname: currentUser.nickname, suffix: currentUser.suffix, avatarUrl: currentUser.avatarUrl, isHost: false, isAlive: true, isReady: false };
+                const pl = { id: currentUser.id, nickname: currentUser.nickname, suffix: currentUser.suffix, avatarUrl: currentUser.avatarUrl, nickEffect: currentUser.activeNickEffect || null, profileBadge: currentUser.profileBadge || null, avatarFrame: currentUser.avatarFrame || 'default', isHost: false, isAlive: true, isReady: false };
                 await db.collection('rooms').doc(roomId).update({
                     players: firebase.firestore.FieldValue.arrayUnion(pl),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 await db.collection('roomInvites').doc(inviteId).delete();
-                showToast('Dołączono do pokoju!', 'success');
+                showToast('Joined room!', 'success');
                 window.location.href = 'room.html?id=' + roomId;
             } catch (e) {
-                showToast('Błąd: ' + e.message, 'error');
+                showToast('Error: ' + e.message, 'error');
             }
         }
 
@@ -299,20 +344,29 @@
             // Sidebar
             document.getElementById('sidebarName').textContent = currentUser.nickname;
             document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
+            document.getElementById('sidebarCoins').textContent = currentUser.coins || 0;
+            document.getElementById('sidebarName').innerHTML = renderNickHTML(currentUser.nickname, currentUser.activeNickEffect, currentUser.profileBadge);
             document.getElementById('sidebarAvatar').textContent = currentUser.nickname.charAt(0).toUpperCase();
             
             if (currentUser.avatarUrl) {
                 document.getElementById('sidebarAvatar').innerHTML = `<img src="${currentUser.avatarUrl}" alt="Avatar">`;
             }
+            applyAvatarFrame(document.getElementById('sidebarAvatar'), currentUser.avatarFrame);
 
             // Welcome
-            document.getElementById('welcomeName').textContent = currentUser.nickname;
+            document.getElementById('welcomeName').innerHTML = renderNickHTML(currentUser.nickname, currentUser.activeNickEffect, currentUser.profileBadge);
 
             // Stats
             document.getElementById('statWins').textContent = currentUser.wins || 0;
             document.getElementById('statLosses').textContent = currentUser.losses || 0;
             document.getElementById('statTotal').textContent = currentUser.totalGames || 0;
             document.getElementById('statWinrate').textContent = calculateWinrate(currentUser.wins || 0, currentUser.losses || 0) + '%';
+
+            const elo = currentUser.elo || 0;
+            const level = currentUser.eloRankLevel || getEloLevel(elo);
+            document.getElementById('welcomeElo').textContent = `${elo} ELO`;
+            document.getElementById('welcomeRankLabel').textContent = `Level ${level}`;
+            document.getElementById('welcomeRankBadge').title = getSeasonLabel(currentUser.eloSeasonKey || getSeasonKey());
         }
 
         function logout() {
@@ -356,6 +410,9 @@
                         nickname: currentUser.nickname,
                         suffix: currentUser.suffix,
                         avatarUrl: currentUser.avatarUrl,
+                        nickEffect: currentUser.activeNickEffect || null,
+                        profileBadge: currentUser.profileBadge || null,
+                        avatarFrame: currentUser.avatarFrame || 'default',
                         isHost: true,
                         isAlive: true,
                         isReady: true
@@ -370,7 +427,7 @@
                 window.location.href = 'room.html?id=' + roomRef.id;
             } catch (error) {
                 showToast('Failed to create room: ' + error.message, 'error');
-                console.error('Create room error:', error);
+                console.error('Create Room error:', error);
             } finally {
                 btn.disabled = false;
                 btn.textContent = 'Create Room';
@@ -431,6 +488,8 @@
                         nickname: currentUser.nickname,
                         suffix: currentUser.suffix,
                         avatarUrl: currentUser.avatarUrl,
+                        nickEffect: currentUser.activeNickEffect || null,
+                        profileBadge: currentUser.profileBadge || null,
                         isHost: false,
                         isAlive: true,
                         isReady: false
@@ -459,7 +518,7 @@
             });
         });
 
-        // Handle Enter key in join room input
+        // Handle Enter key in Join Room input
         document.getElementById('joinRoomCode').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 joinRoom();
@@ -468,4 +527,8 @@
     </script>
 </body>
 </html>
+
+
+
+
 

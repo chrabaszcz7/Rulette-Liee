@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -30,15 +30,15 @@
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label" for="email">Email</label>
+                    <label class="form-label" for="Email">Email</label>
                     <div class="input-wrapper">
                         <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                             <polyline points="22,6 12,13 2,6"></polyline>
                         </svg>
-                        <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                        <input type="Email" id="Email" class="form-input" placeholder="you@example.com" required>
                     </div>
-                    <p class="form-error" id="emailError"></p>
+                    <p class="form-error" id="EmailError"></p>
                 </div>
 
                 <div class="form-group">
@@ -72,6 +72,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <script src="js/audio.js"></script>
     <script>
         // Check if already logged in (and has user doc in Firestore)
         auth.onAuthStateChanged(async (user) => {
@@ -92,7 +93,7 @@
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
+            const Email = document.getElementById('Email').value;
             const password = document.getElementById('password').value;
             const btn = document.getElementById('loginBtn');
             const errorEl = document.getElementById('generalError');
@@ -103,12 +104,12 @@
             btn.textContent = 'Signing in...';
             
             try {
-                const userCred = await auth.signInWithEmailAndPassword(email, password);
+                const userCred = await auth.signInWithEmailAndPassword(Email, password);
                 const userDoc = await db.collection('users').doc(userCred.user.uid).get();
                 
                 if (!userDoc.exists) {
                     await auth.signOut();
-                    errorEl.textContent = 'Konto nie istnieje. Zarejestruj się najpierw.';
+                    errorEl.textContent = 'Konto nie istnieje. Register najpierw.';
                     errorEl.classList.add('show');
                     return;
                 }
@@ -116,15 +117,15 @@
                 showToast('Welcome back!', 'success');
                 window.location.href = 'dashboard.html';
             } catch (error) {
-                let message = 'Logowanie nie powiodło się';
+                let message = 'Login failed';
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
-                    message = 'Konto nie istnieje. Zarejestruj się najpierw.';
+                    message = 'Konto nie istnieje. Register najpierw.';
                 } else if (error.code === 'auth/wrong-password') {
-                    message = 'Nieprawidłowe hasło';
-                } else if (error.code === 'auth/invalid-email') {
-                    message = 'Nieprawidłowy adres email';
+                    message = 'Incorrect password';
+                } else if (error.code === 'auth/invalid-Email') {
+                    message = 'Invalid email address';
                 } else if (error.code === 'auth/too-many-requests') {
-                    message = 'Zbyt wiele prób. Spróbuj później.';
+                    message = 'Too many attempts. Try again later.';
                 }
                 errorEl.textContent = message;
                 errorEl.classList.add('show');
@@ -136,4 +137,6 @@
     </script>
 </body>
 </html>
+
+
 

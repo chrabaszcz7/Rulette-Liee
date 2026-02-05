@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -17,6 +17,13 @@
                     <div class="user-info">
                         <div class="user-name" id="sidebarName">Loading...</div>
                         <div class="user-tag" id="sidebarTag">#00000</div>
+                        <div class="user-coins">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12h8M12 8v8" stroke="#0f0f1a" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span id="sidebarCoins">0</span>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -28,6 +35,22 @@
                         <polyline points="9 22 9 12 15 12 15 22"></polyline>
                     </svg>
                     <span>Home</span>
+                </a>
+                <a href="shop.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2l1.5 4h9L18 2"></path>
+                        <path d="M3 6h18l-1.5 14h-15z"></path>
+                        <circle cx="9" cy="20" r="1"></circle>
+                        <circle cx="15" cy="20" r="1"></circle>
+                    </svg>
+                    <span>Shop</span>
+                </a>
+                <a href="inventory.html" class="nav-item">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7h18v13H3z"></path>
+                        <path d="M16 3H8l-2 4h12z"></path>
+                    </svg>
+                    <span>Inventory</span>
                 </a>
             </nav>
             <div class="sidebar-footer">
@@ -41,14 +64,26 @@
                 </button>
             </div>
         </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <!-- Main Content -->
         <main class="main-content">
+            <div class="mobile-topbar">
+                <button class="btn btn-ghost btn-icon mobile-menu-btn" data-sidebar-toggle aria-label="Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="mobile-title">Rulette Lie</div>
+                <div class="mobile-spacer"></div>
+            </div>
             <!-- Waiting Room View -->
             <div id="waitingRoom">
                 <div style="max-width: 1200px; margin: 0 auto;">
                     <!-- Header -->
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+                    <div class="room-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
                         <div>
                             <h1 style="font-size: 2rem; font-weight: bold;">Game Lobby</h1>
                             <div class="room-code-display mt-1">
@@ -74,7 +109,7 @@
                         </button>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+                    <div class="waiting-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
                         <!-- Players -->
                         <div class="card glass">
                             <div class="card-header">
@@ -105,7 +140,7 @@
                                 <div id="hostControls" class="hidden mt-2">
                                     <hr style="border-color: var(--border-color); margin: 1rem 0;">
                                     <button class="btn btn-ghost btn-full mb-2" id="inviteFriendBtn" onclick="openInviteModal()">
-                                        Zaproś znajomego
+                                        Invite Friend
                                     </button>
                                     <button class="btn btn-neon btn-full" id="startGameBtn" onclick="startGame()" disabled>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
@@ -120,7 +155,7 @@
                             </div>
 
                             <!-- Chat -->
-                            <div class="card glass" style="height: 350px; display: flex; flex-direction: column; padding: 0;">
+                            <div class="card glass room-chat-card" style="height: 350px; display: flex; flex-direction: column; padding: 0;">
                                 <div style="padding: 1rem; border-bottom: 1px solid var(--border-color);">
                                     <h3 style="display: flex; align-items: center; gap: 0.5rem; font-size: 1rem;">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="color: var(--neon-cyan);">
@@ -156,12 +191,12 @@
             <div class="modal-overlay" id="inviteModal">
                 <div class="modal glass">
                     <div class="modal-header">
-                        <h2 class="modal-title">Zaproś znajomego do lobby</h2>
-                        <p class="modal-desc">Wybierz znajomego z listy</p>
+                        <h2 class="modal-title">Invite Friend do lobby</h2>
+                        <p class="modal-desc">Choose a friend from the list</p>
                     </div>
                     <div id="inviteFriendsList" style="max-height: 200px; overflow-y: auto;"></div>
                     <div class="modal-footer">
-                        <button class="btn btn-ghost" onclick="closeInviteModal()">Zamknij</button>
+                        <button class="btn btn-ghost" onclick="closeInviteModal()">Close</button>
                     </div>
                 </div>
             </div>
@@ -211,6 +246,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="js/firebase-config.js"></script>
     <script src="js/game-config.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/ui.js"></script>
     <script>
         let currentUser = null;
         let roomId = null;
@@ -219,6 +256,7 @@
         let unsubscribeRoom = null;
         let unsubscribeGame = null;
         let unsubscribeChat = null;
+        let lastRouletteKey = null;
 
         // Get room ID from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -238,6 +276,7 @@
             const doc = await db.collection('users').doc(user.uid).get();
             if (doc.exists) {
                 currentUser = { id: doc.id, ...doc.data() };
+                currentUser = await ensureEloSeason(currentUser);
                 updateSidebar();
                 subscribeToRoom();
                 subscribeToChat();
@@ -245,12 +284,14 @@
         });
 
         function updateSidebar() {
-            document.getElementById('sidebarName').textContent = currentUser.nickname;
+            document.getElementById('sidebarCoins').textContent = currentUser.coins || 0;
+            document.getElementById('sidebarName').innerHTML = renderNickHTML(currentUser.nickname, currentUser.activeNickEffect, currentUser.profileBadge);
             document.getElementById('sidebarTag').textContent = '#' + currentUser.suffix;
             document.getElementById('sidebarAvatar').textContent = currentUser.nickname.charAt(0).toUpperCase();
             if (currentUser.avatarUrl) {
                 document.getElementById('sidebarAvatar').innerHTML = `<img src="${currentUser.avatarUrl}" alt="Avatar">`;
             }
+            applyAvatarFrame(document.getElementById('sidebarAvatar'), currentUser.avatarFrame);
         }
 
         function subscribeToRoom() {
@@ -307,10 +348,12 @@
                 const isMe = player.id === currentUser.id;
                 grid.innerHTML += `
                     <div class="player-card ${player.isReady ? 'ready' : ''} ${isMe ? 'highlight' : ''}">
-                        <div class="player-avatar">${player.nickname.charAt(0).toUpperCase()}</div>
+                        <div class="player-avatar ${getAvatarFrameClass(player.avatarFrame)}">
+                            ${player.avatarUrl ? `<img src="${player.avatarUrl}" alt="Avatar">` : player.nickname.charAt(0).toUpperCase()}
+                        </div>
                         <div class="player-info">
                             <div class="player-name">
-                                ${player.nickname}
+                                ${renderNickHTML(player.nickname, player.nickEffect, player.profileBadge)}
                                 ${player.isHost ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="color: #fbbf24;"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>' : ''}
                             </div>
                             <div class="player-tag">#${player.suffix}</div>
@@ -364,6 +407,7 @@
             if (!gameData) return;
 
             const arena = document.getElementById('gameArenaCard');
+            const shotsMap = getShotsMap(gameData.rounds || []);
             
             // Game finished
             if (gameData.state === 'finished') {
@@ -380,10 +424,12 @@
                         </div>
                         <h2 class="${isWinner ? 'winner' : ''}">${isWinner ? 'Victory!' : 'Game Over'}</h2>
                         <div class="winner-info">
-                            <div class="winner-avatar">${winner?.nickname.charAt(0).toUpperCase()}</div>
+                            <div class="winner-avatar ${getAvatarFrameClass(winner?.avatarFrame)}">
+                                ${winner?.avatarUrl ? `<img src="${winner.avatarUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : winner?.nickname.charAt(0).toUpperCase()}
+                            </div>
                             <div style="text-align: left;">
                                 <p class="text-muted" style="font-size: 0.85rem;">Winner</p>
-                                <p style="font-size: 1.5rem; font-weight: bold;">${winner?.nickname}</p>
+                                <p style="font-size: 1.5rem; font-weight: bold;">${renderNickHTML(winner?.nickname || '', winner?.nickEffect, winner?.profileBadge)}</p>
                                 <p class="text-muted">#${winner?.suffix}</p>
                             </div>
                         </div>
@@ -404,13 +450,22 @@
 
             // Roulette phase
             if (gameData.state === 'roulette_phase') {
-                const eliminated = currentRound.rouletteResult === gameData.chamber;
                 const correctGuess = currentRound.decision === currentRound.mission;
                 const targetPlayer = correctGuess ? missionPlayer : decisionPlayer;
+                const targetChamber = (gameData.chambers || {})[targetPlayer?.id] || gameData.chamber;
+                const eliminated = targetChamber != null && currentRound.rouletteResult === targetChamber;
+                const rouletteKey = `${gameData.id}-${gameData.currentRound}-${targetPlayer?.id || 'target'}-${currentRound.rouletteResult}`;
+                if (lastRouletteKey !== rouletteKey) {
+                    lastRouletteKey = rouletteKey;
+                    if (window.AudioFX) {
+                        AudioFX.playTrigger();
+                        if (eliminated) AudioFX.playGunshot();
+                    }
+                }
                 
                 arena.innerHTML = `
-                    <div class="roulette-container">
-                        <div class="roulette-wheel">
+                    <div class="roulette-container ${eliminated ? 'roulette-shot' : ''}">
+                        <div class="roulette-wheel spin slowmo">
                             <div class="roulette-cylinder">
                                 <svg class="roulette-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="12" cy="12" r="10"></circle>
@@ -426,7 +481,7 @@
                                 `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="color: var(--error);"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 17c0-1.657 1.79-3 4-3s4 1.343 4 3"/><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/></svg>` :
                                 `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--neon-green);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`
                             }
-                            <h2>${eliminated ? `BANG! ${targetPlayer?.nickname} is eliminated!` : `Click! ${targetPlayer?.nickname} survives!`}</h2>
+                            <h2>${eliminated ? `BANG! ${renderNickHTML(targetPlayer?.nickname || '', targetPlayer?.nickEffect, targetPlayer?.profileBadge)} is eliminated!` : `Click! ${renderNickHTML(targetPlayer?.nickname || '', targetPlayer?.nickEffect, targetPlayer?.profileBadge)} survives!`}</h2>
                         </div>
                         <button class="btn btn-neon btn-lg mt-3" onclick="continueGame()">Continue</button>
                     </div>
@@ -447,61 +502,75 @@
                                 <circle cx="12" cy="12" r="6"></circle>
                                 <circle cx="12" cy="12" r="2"></circle>
                             </svg>
-                            Runda ${gameData.currentRound}
+                            Round ${gameData.currentRound}
                         </h3>
-                        <span class="text-muted">${gameData.alivePlayers.length} graczy żyje</span>
+                        <span class="text-muted">${gameData.alivePlayers.length} players alive</span>
                     </div>
 
                     <div class="game-status">
-                        <h2 class="game-state">${gameData.state === 'mission_phase' && !missionChosen ? 'Wybierz: powiesz prawdę czy skłamiesz?' : gameData.state === 'mission_phase' ? 'Opisz emotkę w chacie!' : 'Prawda czy kłamstwo?'}</h2>
+                        <h2 class="game-state">${gameData.state === 'mission_phase' && !missionChosen ? 'Choose: truth or lie?' : gameData.state === 'mission_phase' ? 'Describe the emoji in chat!' : 'Truth czy Lie?'}</h2>
                     </div>
 
                     <div class="players-arena">
                         <div class="player-role-card mission">
-                            <p class="role-label">Gracz z misją</p>
-                            <div class="role-avatar">${missionPlayer?.nickname.charAt(0).toUpperCase()}</div>
-                            <p class="role-name">${missionPlayer?.nickname}</p>
+                            <p class="role-label">Mission Player</p>
+                            <div class="role-avatar ${getAvatarFrameClass(missionPlayer?.avatarFrame)}">
+                                ${missionPlayer?.avatarUrl ? `<img src="${missionPlayer.avatarUrl}" alt="Avatar">` : missionPlayer?.nickname.charAt(0).toUpperCase()}
+                            </div>
+                            <p class="role-name">${renderNickHTML(missionPlayer?.nickname || '', missionPlayer?.nickEffect, missionPlayer?.profileBadge)}</p>
                             ${isMissionPlayer ? `
                                 <div class="mission-badge" style="font-size: 4rem; margin: 1rem 0;">${emoji}</div>
-                                <p class="text-muted">Opisz tę emotkę w chacie (prawdziwie lub nie)</p>
+                                <p class="text-muted">Describe this emoji in chat (truth or lie)</p>
                                 ${!missionChosen ? `
-                                    <p class="text-muted mt-1">Najpierw wybierz:</p>
+                                    <p class="text-muted mt-1">Choose first:</p>
                                     <div class="decision-buttons" style="margin-top: 1rem;">
-                                        <button class="btn btn-truth" onclick="chooseMission('TRUTH')">Opowiem prawdę</button>
-                                        <button class="btn btn-lie" onclick="chooseMission('LIE')">Skłamię</button>
+                                        <button class="btn btn-truth" onclick="chooseMission('TRUTH')">Tell the truth</button>
+                                        <button class="btn btn-lie" onclick="chooseMission('LIE')">Lie</button>
                                     </div>
                                 ` : `
-                                    <p class="text-muted mt-2">Wybrałeś. Opisz emotkę w chacie i czekaj na decyzję drugiego gracza.</p>
+                                    <p class="text-muted mt-2">You chose. Describe the emoji and wait for the decision.</p>
                                 `}
                             ` : `
-                                <p class="text-muted mt-2">${missionChosen ? 'Opisuje emotkę w chacie...' : 'Wybiera...'}</p>
+                                <p class="text-muted mt-2">${missionChosen ? 'Describing in chat...' : 'Choosing...'}</p>
                             `}
                         </div>
 
                         <div class="player-role-card decision">
-                            <p class="role-label">Gracz decydujący</p>
-                            <div class="role-avatar">${decisionPlayer?.nickname.charAt(0).toUpperCase()}</div>
-                            <p class="role-name">${decisionPlayer?.nickname}</p>
+                            <p class="role-label">Decision Player</p>
+                            <div class="role-avatar ${getAvatarFrameClass(decisionPlayer?.avatarFrame)}">
+                                ${decisionPlayer?.avatarUrl ? `<img src="${decisionPlayer.avatarUrl}" alt="Avatar">` : decisionPlayer?.nickname.charAt(0).toUpperCase()}
+                            </div>
+                            <p class="role-name">${renderNickHTML(decisionPlayer?.nickname || '', decisionPlayer?.nickEffect, decisionPlayer?.profileBadge)}</p>
                             ${isDecisionPlayer && gameData.state === 'decision_phase' ? `
-                                <p class="text-muted mt-2">Gracz z misją opisał emotkę w chacie. Mówi prawdę czy kłamie?</p>
+                                <p class="text-muted mt-2">The mission player described the emoji. Truth or lie?</p>
                                 <div class="decision-buttons">
-                                    <button class="btn btn-truth" onclick="makeDecision('TRUTH')">Prawda</button>
-                                    <button class="btn btn-lie" onclick="makeDecision('LIE')">Kłamstwo</button>
+                                    <button class="btn btn-truth" onclick="makeDecision('TRUTH')">Truth</button>
+                                    <button class="btn btn-lie" onclick="makeDecision('LIE')">Lie</button>
                                 </div>
                             ` : isDecisionPlayer && missionChosen ? `
-                                <p class="text-muted mt-2">Słuchaj opisu w chacie, zaraz zobaczysz przyciski.</p>
+                                <p class="text-muted mt-2">Listen to the chat description. Buttons will appear soon.</p>
                             ` : ''
                             }
                         </div>
                     </div>
 
                     <div class="alive-players">
-                        <h4>Gracze żywi</h4>
+                        <h4>Alive Players</h4>
                         <div class="alive-list">
                             ${roomData.players.map(p => `
                                 <div class="alive-player ${gameData.alivePlayers.includes(p.id) ? '' : 'eliminated'}">
-                                    <div class="alive-avatar">${p.nickname.charAt(0).toUpperCase()}</div>
-                                    <span>${p.nickname}</span>
+                                    <div class="alive-avatar ${getAvatarFrameClass(p.avatarFrame)}">
+                                        ${p.avatarUrl ? `<img src="${p.avatarUrl}" alt="Avatar">` : p.nickname.charAt(0).toUpperCase()}
+                                    </div>
+                                    <span>${renderNickHTML(p.nickname, p.nickEffect, p.profileBadge)}</span>
+                                    <span class="text-muted" style="font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                            <circle cx="12" cy="12" r="9"></circle>
+                                            <circle cx="12" cy="12" r="2"></circle>
+                                            <path d="M12 3v2M12 19v2M3 12h2M19 12h2"></path>
+                                        </svg>
+                                        ${shotsMap[p.id] || 0}/6
+                                    </span>
                                     ${!gameData.alivePlayers.includes(p.id) ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="color: var(--error);"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 17c0-1.657 1.79-3 4-3s4 1.343 4 3"/></svg>' : ''}
                                 </div>
                             `).join('')}
@@ -509,6 +578,17 @@
                     </div>
                 </div>
             `;
+        }
+
+        function getShotsMap(rounds) {
+            const map = {};
+            rounds.forEach(r => {
+                if (r.rouletteResult == null || r.decision == null || r.mission == null) return;
+                const isCorrect = r.decision === r.mission;
+                const targetId = isCorrect ? r.missionPlayerId : r.decisionPlayerId;
+                map[targetId] = Math.min(6, (map[targetId] || 0) + 1);
+            });
+            return map;
         }
 
         async function chooseMission(choice) {
@@ -541,15 +621,16 @@
 
             container.innerHTML = messages.map(msg => {
                 const isOwn = msg.userId === currentUser.id;
+                const safeMessage = escapeHTML(msg.message || '');
                 return `
                     <div class="chat-message ${isOwn ? 'own' : ''}">
-                        <div class="chat-avatar">${msg.nickname.charAt(0).toUpperCase()}</div>
+                        <div class="chat-avatar ${getAvatarFrameClass(msg.avatarFrame)}">${msg.nickname.charAt(0).toUpperCase()}</div>
                         <div class="chat-content">
                             <div class="chat-meta">
-                                <span class="chat-name">${msg.nickname}</span>
+                                <span class="chat-name">${renderNickHTML(msg.nickname, msg.nickEffect, msg.profileBadge)}</span>
                                 <span class="chat-time">${formatTime(msg.createdAt)}</span>
                             </div>
-                            <div class="chat-bubble">${msg.message}</div>
+                            <div class="chat-bubble">${safeMessage}</div>
                         </div>
                     </div>
                 `;
@@ -580,13 +661,16 @@
             try {
                 const playerIds = roomData.players.map(p => p.id);
                 const shuffled = [...playerIds].sort(() => Math.random() - 0.5);
-                const chamber = Math.floor(Math.random() * 6) + 1;
+                const chambers = {};
+                playerIds.forEach(id => {
+                    chambers[id] = Math.floor(Math.random() * 6) + 1;
+                });
                 const missionEmoji = typeof getRandomMissionEmoji === 'function' ? getRandomMissionEmoji() : '🐺';
 
                 await db.collection('games').add({
                     roomId: roomId,
                     state: 'mission_phase',
-                    chamber: chamber,
+                    chambers: chambers,
                     currentRound: 1,
                     rounds: [{
                         roundNumber: 1,
@@ -623,18 +707,13 @@
             const isCorrect = decision === currentRound.mission;
             
             let eliminatedPlayerId = null;
-            const rouletteResult = Math.floor(Math.random() * 6) + 1;
+            const shotsMap = getShotsMap(gameData.rounds || []);
+            const targetId = isCorrect ? currentRound.missionPlayerId : currentRound.decisionPlayerId;
+            const rouletteResult = Math.min(6, (shotsMap[targetId] || 0) + 1);
+            const targetChamber = (gameData.chambers || {})[targetId] || gameData.chamber;
             
-            if (!isCorrect) {
-                // Wrong - decision player faces roulette
-                if (rouletteResult === gameData.chamber) {
-                    eliminatedPlayerId = currentRound.decisionPlayerId;
-                }
-            } else {
-                // Correct - mission player faces roulette
-                if (rouletteResult === gameData.chamber) {
-                    eliminatedPlayerId = currentRound.missionPlayerId;
-                }
+            if (targetChamber != null && rouletteResult === targetChamber) {
+                eliminatedPlayerId = targetId;
             }
 
             currentRound.decision = decision;
@@ -664,20 +743,45 @@
 
             // Update stats if game finished
             if (winnerId) {
+                const seasonKey = getSeasonKey();
                 const batch = db.batch();
-                roomData.players.forEach(player => {
+                const userDocs = await Promise.all(
+                    roomData.players.map(p => db.collection('users').doc(p.id).get())
+                );
+
+                roomData.players.forEach((player, idx) => {
                     const userRef = db.collection('users').doc(player.id);
+                    const doc = userDocs[idx];
+                    const data = doc.exists ? doc.data() : {};
+                    const baseElo = getBaseEloForSeason(data, seasonKey);
+                    const delta = player.id === winnerId ? getEloDelta() : -getEloDelta();
+                    const newElo = Math.max(0, baseElo + delta);
+                    const nextRank = getEloLevel(newElo);
+
+                    const updates = {
+                        totalGames: firebase.firestore.FieldValue.increment(1),
+                        elo: newElo,
+                        eloSeasonKey: seasonKey,
+                        eloRankLevel: nextRank,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+
                     if (player.id === winnerId) {
-                        batch.update(userRef, {
-                            wins: firebase.firestore.FieldValue.increment(1),
-                            totalGames: firebase.firestore.FieldValue.increment(1)
-                        });
+                        updates.wins = firebase.firestore.FieldValue.increment(1);
+                        updates.coins = firebase.firestore.FieldValue.increment(10);
                     } else {
-                        batch.update(userRef, {
-                            losses: firebase.firestore.FieldValue.increment(1),
-                            totalGames: firebase.firestore.FieldValue.increment(1)
-                        });
+                        updates.losses = firebase.firestore.FieldValue.increment(1);
                     }
+
+                    batch.update(userRef, updates);
+
+                    const historyRef = db.collection('users').doc(player.id).collection('history').doc();
+                    batch.set(historyRef, {
+                        result: player.id === winnerId ? 'Win' : 'Loss',
+                        eloDelta: delta,
+                        roomId: roomId,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 });
 
                 batch.update(db.collection('rooms').doc(roomId), {
@@ -727,11 +831,23 @@
                 userId: currentUser.id,
                 nickname: currentUser.nickname,
                 suffix: currentUser.suffix,
+                nickEffect: currentUser.activeNickEffect || null,
+                profileBadge: currentUser.profileBadge || null,
+                avatarFrame: currentUser.avatarFrame || 'default',
                 message: message,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
 
             input.value = '';
+        }
+
+        function escapeHTML(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
         function copyRoomCode() {
@@ -741,12 +857,12 @@
 
         async function openInviteModal() {
             const list = document.getElementById('inviteFriendsList');
-            list.innerHTML = '<p class="text-muted">Ładowanie...</p>';
+            list.innerHTML = '<p class="text-muted">Loading...</p>';
             document.getElementById('inviteModal').classList.add('show');
             const snap = await db.collection('users').doc(currentUser.id).collection('friends').get();
             const ids = snap.docs.map(d => d.data().userId);
             if (!ids.length) {
-                list.innerHTML = '<p class="text-muted">Brak znajomych. Dodaj ich w zakładce Friends.</p>';
+                list.innerHTML = '<p class="text-muted">No friends yet. Add them in Friends.</p>';
                 return;
             }
             const friends = [];
@@ -757,14 +873,14 @@
             const inRoom = roomData.players.map(p => p.id);
             const canInvite = friends.filter(f => !inRoom.includes(f.id));
             if (!canInvite.length) {
-                list.innerHTML = '<p class="text-muted">Wszyscy znajomi są już w pokoju.</p>';
+                list.innerHTML = '<p class="text-muted">All friends are already in the room.</p>';
                 return;
             }
             list.innerHTML = canInvite.map(f => `
                 <div class="friend-item" style="cursor:pointer;" onclick="inviteToLobby('${f.id}')">
                     <div class="friend-avatar">${(f.nickname || '').charAt(0).toUpperCase()}</div>
                     <div class="friend-info">
-                        <div class="friend-name">${f.nickname}</div>
+                        <div class="friend-name">${renderNickHTML(f.nickname, f.activeNickEffect, f.profileBadge)}</div>
                         <div class="friend-tag">#${f.suffix}</div>
                     </div>
                 </div>
@@ -788,10 +904,10 @@
                     toUserId: friendId,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                showToast('Zaproszenie wysłane!', 'success');
+                showToast('Invite sent!', 'success');
                 closeInviteModal();
             } catch (e) {
-                showToast('Błąd: ' + e.message, 'error');
+                showToast('Error: ' + e.message, 'error');
             }
         }
 
@@ -833,4 +949,6 @@
     </script>
 </body>
 </html>
+
+
 
